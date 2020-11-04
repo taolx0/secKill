@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"github.com/go-kit/kit/endpoint"
-	"github.com/longjoy/micro-go-book/ch13-seckill/user-service/service"
+	"github.com/taolx0/secKill/user-service/service"
 	"reflect"
 )
 

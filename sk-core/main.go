@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/longjoy/micro-go-book/ch13-seckill/sk-core/setup"
+	"github.com/taolx0/secKill/sk-core/setup"
 )
 
 func main() {

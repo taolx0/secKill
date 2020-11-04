@@ -3,9 +3,9 @@ package srv_redis
 import (
 	"encoding/json"
 	"fmt"
-	conf "github.com/longjoy/micro-go-book/ch13-seckill/pkg/config"
-	"github.com/longjoy/micro-go-book/ch13-seckill/sk-app/config"
-	"github.com/longjoy/micro-go-book/ch13-seckill/sk-app/model"
+	conf "github.com/taolx0/secKill/pkg/config"
+	"github.com/taolx0/secKill/sk-app/config"
+	"github.com/taolx0/secKill/sk-app/model"
 	"log"
 	"time"
 )

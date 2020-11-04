@@ -2,10 +2,10 @@ package client
 
 import (
 	"context"
-	"github.com/longjoy/micro-go-book/ch13-seckill/pb"
-	"github.com/longjoy/micro-go-book/ch13-seckill/pkg/discover"
-	"github.com/longjoy/micro-go-book/ch13-seckill/pkg/loadbalance"
 	"github.com/opentracing/opentracing-go"
+	"github.com/taolx0/secKill/pb"
+	"github.com/taolx0/secKill/pkg/discover"
+	"github.com/taolx0/secKill/pkg/loadbalance"
 )
 
 type OAuthClient interface {

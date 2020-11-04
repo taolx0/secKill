@@ -3,12 +3,12 @@ package conf
 import (
 	"fmt"
 	"github.com/go-kit/kit/log"
-	"github.com/longjoy/micro-go-book/ch13-seckill/pkg/bootstrap"
-	"github.com/longjoy/micro-go-book/ch13-seckill/pkg/discover"
 	"github.com/openzipkin/zipkin-go"
 	zipKinHttp "github.com/openzipkin/zipkin-go/reporter/http"
 	_ "github.com/openzipkin/zipkin-go/reporter/recorder"
 	"github.com/spf13/viper"
+	"github.com/taolx0/secKill/pkg/bootstrap"
+	"github.com/taolx0/secKill/pkg/discover"
 	"net/http"
 	"os"
 	"strconv"
@@ -33,17 +33,17 @@ func init() {
 	initDefault()
 
 	if err := LoadRemoteConfig(); err != nil {
-		Logger.Log("Fail to load remote config", err)
+		_ = Logger.Log("Fail to load remote config", err)
 	}
 
 	//if err := Sub("mysql", &MysqlConfig); err != nil {
 	//	Logger.Log("Fail to parse mysql", err)
 	//}
 	if err := Sub("trace", &TraceConfig); err != nil {
-		Logger.Log("Fail to parse trace", err)
+		_ = Logger.Log("Fail to parse trace", err)
 	}
 	zipkinUrl := "http://" + TraceConfig.Host + ":" + TraceConfig.Port + TraceConfig.Url
-	Logger.Log("zipkin url", zipkinUrl)
+	_ = Logger.Log("zipkin url", zipkinUrl)
 	initTracer(zipkinUrl)
 }
 
@@ -61,11 +61,11 @@ func initTracer(zipkinURL string) {
 		zipkin.WithNoopTracer(useNoopTracer),
 	)
 	if err != nil {
-		Logger.Log("err", err)
+		_ = Logger.Log("err", err)
 		os.Exit(1)
 	}
 	if !useNoopTracer {
-		Logger.Log("tracer", "Zipkin", "type", "Native", "URL", zipkinURL)
+		_ = Logger.Log("tracer", "Zipkin", "type", "Native", "URL", zipkinURL)
 	}
 }
 
@@ -93,12 +93,12 @@ func LoadRemoteConfig() (err error) {
 	if err = viper.ReadConfig(resp.Body); err != nil {
 		return
 	}
-	Logger.Log("Load config from: ", confAddr)
+	_ = Logger.Log("Load config from: ", confAddr)
 	return
 }
 
 func Sub(key string, value interface{}) error {
-	Logger.Log("配置文件的前缀为：", key)
+	_ = Logger.Log("配置文件的前缀为：", key)
 	sub := viper.Sub(key)
 	sub.AutomaticEnv()
 	sub.SetEnvPrefix(key)

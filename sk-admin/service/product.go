@@ -2,7 +2,7 @@ package service
 
 import (
 	"github.com/gohouse/gorose/v2"
-	"github.com/longjoy/micro-go-book/ch13-seckill/sk-admin/model"
+	"github.com/taolx0/secKill/sk-admin/model"
 	"log"
 )
 

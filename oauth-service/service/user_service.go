@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"errors"
-	"github.com/longjoy/micro-go-book/ch13-seckill/oauth-service/model"
-	"github.com/longjoy/micro-go-book/ch13-seckill/pb"
-	"github.com/longjoy/micro-go-book/ch13-seckill/pkg/client"
+	"github.com/taolx0/secKill/oauth-service/model"
+	"github.com/taolx0/secKill/pb"
+	"github.com/taolx0/secKill/pkg/client"
 )
 
 var (

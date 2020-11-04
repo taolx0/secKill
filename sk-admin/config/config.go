@@ -2,13 +2,13 @@ package config
 
 import (
 	"github.com/go-kit/kit/log"
-	"github.com/longjoy/micro-go-book/ch13-seckill/pkg/bootstrap"
-	_ "github.com/longjoy/micro-go-book/ch13-seckill/pkg/bootstrap"
-	conf "github.com/longjoy/micro-go-book/ch13-seckill/pkg/config"
 	"github.com/openzipkin/zipkin-go"
-	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
+	zipKinHttp "github.com/openzipkin/zipkin-go/reporter/http"
 	_ "github.com/openzipkin/zipkin-go/reporter/recorder"
 	"github.com/spf13/viper"
+	"github.com/taolx0/secKill/pkg/bootstrap"
+	_ "github.com/taolx0/secKill/pkg/bootstrap"
+	conf "github.com/taolx0/secKill/pkg/config"
 	"os"
 )
 
@@ -27,17 +27,17 @@ func init() {
 	initDefault()
 
 	if err := conf.LoadRemoteConfig(); err != nil {
-		Logger.Log("Fail to load remote config", err)
+		_ = Logger.Log("Fail to load remote config", err)
 	}
 
 	if err := conf.Sub("mysql", &conf.MysqlConfig); err != nil {
-		Logger.Log("Fail to parse mysql", err)
+		_ = Logger.Log("Fail to parse mysql", err)
 	}
 	if err := conf.Sub("trace", &conf.TraceConfig); err != nil {
-		Logger.Log("Fail to parse trace", err)
+		_ = Logger.Log("Fail to parse trace", err)
 	}
 	zipkinUrl := "http://" + conf.TraceConfig.Host + ":" + conf.TraceConfig.Port + conf.TraceConfig.Url
-	Logger.Log("zipkin url", zipkinUrl)
+	_ = Logger.Log("zipkin url", zipkinUrl)
 }
 
 func initDefault() {
@@ -48,7 +48,7 @@ func initTracer(zipkinURL string) {
 	var (
 		err           error
 		useNoopTracer = zipkinURL == ""
-		reporter      = zipkinhttp.NewReporter(zipkinURL)
+		reporter      = zipKinHttp.NewReporter(zipkinURL)
 	)
 	//defer reporter.Close()
 	zEP, _ := zipkin.NewEndpoint(bootstrap.DiscoverConfig.ServiceName, bootstrap.HttpConfig.Port)
@@ -56,10 +56,10 @@ func initTracer(zipkinURL string) {
 		reporter, zipkin.WithLocalEndpoint(zEP), zipkin.WithNoopTracer(useNoopTracer),
 	)
 	if err != nil {
-		Logger.Log("err", err)
+		_ = Logger.Log("err", err)
 		os.Exit(1)
 	}
 	if !useNoopTracer {
-		Logger.Log("tracer", "Zipkin", "type", "Native", "URL", zipkinURL)
+		_ = Logger.Log("tracer", "Zipkin", "type", "Native", "URL", zipkinURL)
 	}
 }

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"github.com/go-kit/kit/endpoint"
 	"github.com/go-kit/kit/log"
-	"github.com/longjoy/micro-go-book/ch13-seckill/oauth-service/model"
-	"github.com/longjoy/micro-go-book/ch13-seckill/oauth-service/service"
+	"github.com/taolx0/secKill/oauth-service/model"
+	"github.com/taolx0/secKill/oauth-service/service"
 	"net/http"
 )
 

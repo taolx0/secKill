@@ -9,10 +9,10 @@ import (
 	"github.com/go-kit/kit/transport"
 	kitHttp "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
-	endpoints "github.com/longjoy/micro-go-book/ch13-seckill/sk-app/endpoint"
-	"github.com/longjoy/micro-go-book/ch13-seckill/sk-app/model"
 	goZipkin "github.com/openzipkin/zipkin-go"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	endpoints "github.com/taolx0/secKill/sk-app/endpoint"
+	"github.com/taolx0/secKill/sk-app/model"
 	"net/http"
 )
 

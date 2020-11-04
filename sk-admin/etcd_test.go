@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"github.com/coreos/etcd/clientv3"
-	conf "github.com/longjoy/micro-go-book/ch13-seckill/pkg/config"
+	conf "github.com/taolx0/secKill/pkg/config"
 	"log"
 	"testing"
 	"time"

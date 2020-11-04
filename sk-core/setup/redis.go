@@ -2,7 +2,7 @@ package setup
 
 import (
 	"github.com/go-redis/redis"
-	config "github.com/longjoy/micro-go-book/ch13-seckill/pkg/config"
+	config "github.com/taolx0/secKill/pkg/config"
 	"log"
 )
 
