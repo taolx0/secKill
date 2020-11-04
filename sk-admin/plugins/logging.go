@@ -3,8 +3,8 @@ package plugins
 import (
 	"github.com/go-kit/kit/log"
 	"github.com/gohouse/gorose/v2"
-	"github.com/taolx0/secKill/sk-admin/model"
-	"github.com/taolx0/secKill/sk-admin/service"
+	"secKill/sk-admin/model"
+	"secKill/sk-admin/service"
 	"time"
 )
 

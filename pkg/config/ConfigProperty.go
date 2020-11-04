@@ -4,7 +4,7 @@ import (
 	"github.com/coreos/etcd/clientv3"
 	"github.com/go-redis/redis"
 	"github.com/samuel/go-zookeeper/zk"
-	"github.com/taolx0/secKill/sk-core/service/srv_limit"
+	"secKill/sk-core/service/srv_limit"
 	"sync"
 )
 

@@ -7,9 +7,9 @@ import (
 	"github.com/go-kit/kit/metrics"
 	"github.com/gohouse/gorose/v2"
 	"github.com/juju/ratelimit"
-	"github.com/taolx0/secKill/sk-admin/model"
-	"github.com/taolx0/secKill/sk-admin/service"
 	"golang.org/x/time/rate"
+	"secKill/sk-admin/model"
+	"secKill/sk-admin/service"
 	"time"
 )
 

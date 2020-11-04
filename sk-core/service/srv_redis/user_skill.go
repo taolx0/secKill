@@ -3,11 +3,11 @@ package srv_redis
 import (
 	"crypto/md5"
 	"fmt"
-	conf "github.com/taolx0/secKill/pkg/config"
-	"github.com/taolx0/secKill/sk-core/config"
-	"github.com/taolx0/secKill/sk-core/service/srv_err"
-	"github.com/taolx0/secKill/sk-core/service/srv_user"
 	"log"
+	conf "secKill/pkg/config"
+	"secKill/sk-core/config"
+	"secKill/sk-core/service/srv_err"
+	"secKill/sk-core/service/srv_user"
 	"time"
 )
 

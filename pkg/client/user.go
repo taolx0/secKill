@@ -3,9 +3,9 @@ package client
 import (
 	"context"
 	"github.com/opentracing/opentracing-go"
-	"github.com/taolx0/secKill/pb"
-	"github.com/taolx0/secKill/pkg/discover"
-	"github.com/taolx0/secKill/pkg/loadbalance"
+	"secKill/pb"
+	"secKill/pkg/discover"
+	"secKill/pkg/loadbalance"
 )
 
 type UserClient interface {

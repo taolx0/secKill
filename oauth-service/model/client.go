@@ -2,8 +2,8 @@ package model
 
 import (
 	"encoding/json"
-	"github.com/taolx0/secKill/pkg/mysql"
 	"log"
+	"secKill/pkg/mysql"
 )
 
 type ClientDetails struct {

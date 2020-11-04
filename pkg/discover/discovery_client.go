@@ -3,8 +3,8 @@ package discover
 import (
 	"github.com/go-kit/kit/sd/consul"
 	"github.com/hashicorp/consul/api"
-	"github.com/taolx0/secKill/pkg/common"
 	"log"
+	"secKill/pkg/common"
 	"sync"
 )
 
