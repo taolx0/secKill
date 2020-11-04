@@ -18,6 +18,7 @@ func init() {
 	if err := subParse("http", &HttpConfig); err != nil {
 		log.Fatal("Fail to parse Http config", err)
 	}
+	log.Println(HttpConfig)
 	if err := subParse("discover", &DiscoverConfig); err != nil {
 		log.Fatal("Fail to parse Discover config", err)
 	}

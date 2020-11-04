@@ -12,5 +12,4 @@ func main() {
 	//setup.InitEtcd()
 	setup.InitZk()
 	setup.InitServer(bootstrap.HttpConfig.Host, bootstrap.HttpConfig.Port)
-
 }
