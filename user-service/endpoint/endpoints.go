@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"github.com/go-kit/kit/endpoint"
+	"github.com/taolx0/secKill/user-service/service"
 	"reflect"
-	"secKill/user-service/service"
 )
 
 type UserEndpoints struct {

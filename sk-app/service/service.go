@@ -2,13 +2,13 @@ package service
 
 import (
 	"fmt"
+	conf "github.com/taolx0/secKill/pkg/config"
+	"github.com/taolx0/secKill/sk-app/config"
+	"github.com/taolx0/secKill/sk-app/model"
+	"github.com/taolx0/secKill/sk-app/service/srv_err"
+	"github.com/taolx0/secKill/sk-app/service/srv_limit"
 	"log"
 	"math/rand"
-	conf "secKill/pkg/config"
-	"secKill/sk-app/config"
-	"secKill/sk-app/model"
-	"secKill/sk-app/service/srv_err"
-	"secKill/sk-app/service/srv_limit"
 	"time"
 )
 

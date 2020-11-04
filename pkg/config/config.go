@@ -7,10 +7,10 @@ import (
 	zipKinHttp "github.com/openzipkin/zipkin-go/reporter/http"
 	_ "github.com/openzipkin/zipkin-go/reporter/recorder"
 	"github.com/spf13/viper"
+	"github.com/taolx0/secKill/pkg/bootstrap"
+	"github.com/taolx0/secKill/pkg/discover"
 	"net/http"
 	"os"
-	"secKill/pkg/bootstrap"
-	"secKill/pkg/discover"
 	"strconv"
 )
 

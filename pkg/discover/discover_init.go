@@ -4,12 +4,12 @@ import (
 	"errors"
 	"fmt"
 	uuid "github.com/satori/go.uuid"
+	"github.com/taolx0/secKill/pkg/bootstrap"
+	"github.com/taolx0/secKill/pkg/common"
+	"github.com/taolx0/secKill/pkg/loadbalance"
 	"log"
 	"net/http"
 	"os"
-	"secKill/pkg/bootstrap"
-	"secKill/pkg/common"
-	"secKill/pkg/loadbalance"
 )
 
 var ConsulService DiscoveryClient

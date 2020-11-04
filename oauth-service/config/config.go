@@ -6,10 +6,10 @@ import (
 	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
 	_ "github.com/openzipkin/zipkin-go/reporter/recorder"
 	"github.com/spf13/viper"
+	"github.com/taolx0/secKill/pkg/bootstrap"
+	_ "github.com/taolx0/secKill/pkg/bootstrap"
+	conf "github.com/taolx0/secKill/pkg/config"
 	"os"
-	"secKill/pkg/bootstrap"
-	_ "secKill/pkg/bootstrap"
-	conf "secKill/pkg/config"
 )
 
 const (

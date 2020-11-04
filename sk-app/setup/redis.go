@@ -2,10 +2,10 @@ package setup
 
 import (
 	"github.com/go-redis/redis"
+	conf "github.com/taolx0/secKill/pkg/config"
+	"github.com/taolx0/secKill/sk-app/service/srv_redis"
 	"github.com/unknwon/com"
 	"log"
-	conf "secKill/pkg/config"
-	"secKill/sk-app/service/srv_redis"
 	"time"
 )
 

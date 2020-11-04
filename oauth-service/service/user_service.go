@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"errors"
-	"secKill/oauth-service/model"
-	"secKill/pb"
-	"secKill/pkg/client"
+	"github.com/taolx0/secKill/oauth-service/model"
+	"github.com/taolx0/secKill/pb"
+	"github.com/taolx0/secKill/pkg/client"
 )
 
 var (

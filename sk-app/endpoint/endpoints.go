@@ -3,8 +3,8 @@ package endpoint
 import (
 	"context"
 	"github.com/go-kit/kit/endpoint"
-	"secKill/sk-app/model"
-	"secKill/sk-app/service"
+	"github.com/taolx0/secKill/sk-app/model"
+	"github.com/taolx0/secKill/sk-app/service"
 )
 
 // CalculateEndpoint define endpoint

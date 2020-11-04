@@ -2,8 +2,8 @@ package transport
 
 import (
 	"context"
-	"secKill/pb"
-	"secKill/user-service/endpoint"
+	"github.com/taolx0/secKill/pb"
+	"github.com/taolx0/secKill/user-service/endpoint"
 )
 
 func EncodeGRPCUserRequest(_ context.Context, r interface{}) (interface{}, error) {

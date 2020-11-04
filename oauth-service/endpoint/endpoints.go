@@ -5,9 +5,9 @@ import (
 	"errors"
 	"github.com/go-kit/kit/endpoint"
 	"github.com/go-kit/kit/log"
+	"github.com/taolx0/secKill/oauth-service/model"
+	"github.com/taolx0/secKill/oauth-service/service"
 	"net/http"
-	"secKill/oauth-service/model"
-	"secKill/oauth-service/service"
 )
 
 // CalculateEndpoint define endpoint

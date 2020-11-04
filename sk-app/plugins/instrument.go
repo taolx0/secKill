@@ -6,9 +6,9 @@ import (
 	"github.com/go-kit/kit/endpoint"
 	"github.com/go-kit/kit/metrics"
 	"github.com/juju/ratelimit"
+	"github.com/taolx0/secKill/sk-app/model"
+	"github.com/taolx0/secKill/sk-app/service"
 	"golang.org/x/time/rate"
-	"secKill/sk-app/model"
-	"secKill/sk-app/service"
 	"time"
 )
 

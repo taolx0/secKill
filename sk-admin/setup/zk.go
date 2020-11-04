@@ -3,7 +3,7 @@ package setup
 import (
 	"fmt"
 	"github.com/samuel/go-zookeeper/zk"
-	conf "secKill/pkg/config"
+	conf "github.com/taolx0/secKill/pkg/config"
 	"time"
 )
 

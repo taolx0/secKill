@@ -3,8 +3,8 @@ package transport
 import (
 	"context"
 	"github.com/go-kit/kit/transport/grpc"
-	endpts "secKill/oauth-service/endpoint"
-	"secKill/pb"
+	endpts "github.com/taolx0/secKill/oauth-service/endpoint"
+	"github.com/taolx0/secKill/pb"
 )
 
 type grpcServer struct {

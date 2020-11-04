@@ -11,9 +11,9 @@ import (
 	"github.com/gorilla/mux"
 	goZipkin "github.com/openzipkin/zipkin-go"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	endpoints "github.com/taolx0/secKill/sk-app/endpoint"
+	"github.com/taolx0/secKill/sk-app/model"
 	"net/http"
-	endpoints "secKill/sk-app/endpoint"
-	"secKill/sk-app/model"
 )
 
 var (

@@ -2,8 +2,8 @@ package setup
 
 import (
 	"github.com/go-redis/redis"
+	config "github.com/taolx0/secKill/pkg/config"
 	"log"
-	config "secKill/pkg/config"
 )
 
 //初始化redis

@@ -2,9 +2,9 @@ package srv_limit
 
 import (
 	"fmt"
+	conf "github.com/taolx0/secKill/pkg/config"
+	"github.com/taolx0/secKill/sk-app/model"
 	"log"
-	conf "secKill/pkg/config"
-	"secKill/sk-app/model"
 	"sync"
 )
 

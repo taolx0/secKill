@@ -1,7 +1,7 @@
 package main
 
 import (
-	"secKill/sk-core/setup"
+	"github.com/taolx0/secKill/sk-core/setup"
 )
 
 func main() {

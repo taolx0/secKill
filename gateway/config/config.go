@@ -3,8 +3,8 @@ package config
 import (
 	"github.com/go-kit/kit/log"
 	"github.com/spf13/viper"
+	conf "github.com/taolx0/secKill/pkg/config"
 	"os"
-	conf "secKill/pkg/config"
 )
 
 const (

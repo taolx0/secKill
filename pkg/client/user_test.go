@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/opentracing/opentracing-go"
 	zipkin "github.com/openzipkin-contrib/zipkin-go-opentracing"
+	"github.com/taolx0/secKill/pb"
 	"log"
-	"secKill/pb"
 	"testing"
 )
 

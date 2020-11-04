@@ -1,8 +1,8 @@
 package main
 
 import (
-	"secKill/pkg/bootstrap"
-	"secKill/sk-app/setup"
+	"github.com/taolx0/secKill/pkg/bootstrap"
+	"github.com/taolx0/secKill/sk-app/setup"
 )
 
 func main() {

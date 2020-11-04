@@ -2,8 +2,8 @@ package plugins
 
 import (
 	"github.com/go-kit/kit/log"
-	"secKill/sk-app/model"
-	"secKill/sk-app/service"
+	"github.com/taolx0/secKill/sk-app/model"
+	"github.com/taolx0/secKill/sk-app/service"
 	"time"
 )
 
