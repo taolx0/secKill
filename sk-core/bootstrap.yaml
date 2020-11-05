@@ -1,6 +1,6 @@
 http:
   host: localhost
-  port: 8888
+  port: 8500
 
 rpc:
   host: localhost

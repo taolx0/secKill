@@ -24,7 +24,6 @@ func init() {
 	if err := subParse("config", &ConfigServerConfig); err != nil {
 		log.Fatal("Fail to parse config server", err)
 	}
-	log.Println(ConfigServerConfig)
 	if err := subParse("rpc", &RpcConfig); err != nil {
 		log.Fatal("Fail to parse rpc server", err)
 	}

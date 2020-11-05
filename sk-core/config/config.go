@@ -96,17 +96,17 @@ type SecResult struct {
 }
 
 type SecRequest struct {
-	ProductId     int             `json:"product_id"` //商品ID
-	Source        string          `json:"source"`
-	AuthCode      string          `json:"auth_code"`
-	SecTime       int64           `json:"sec_time"`
-	Nance         string          `json:"nance"`
-	UserId        int             `json:"user_id"`
-	UserAuthSign  string          `json:"user_auth_sign"` //用户授权签名
-	ClientAddr    string          `json:"client_addr"`
-	ClientRefence string          `json:"client_refence"`
-	CloseNotify   <-chan bool     `json:"-"`
-	ResultChan    chan *SecResult `json:"-"`
+	ProductId       int             `json:"product_id"` //商品ID
+	Source          string          `json:"source"`
+	AuthCode        string          `json:"auth_code"`
+	SecTime         int64           `json:"sec_time"`
+	Nance           string          `json:"nance"`
+	UserId          int             `json:"user_id"`
+	UserAuthSign    string          `json:"user_auth_sign"` //用户授权签名
+	ClientAddr      string          `json:"client_addr"`
+	ClientReference string          `json:"client_reference"`
+	CloseNotify     <-chan bool     `json:"-"`
+	ResultChan      chan *SecResult `json:"-"`
 }
 
 type SkAppCtx struct {
