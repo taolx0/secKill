@@ -39,6 +39,7 @@ func init() {
 	//if err := Sub("mysql", &MysqlConfig); err != nil {
 	//	Logger.Log("Fail to parse mysql", err)
 	//}
+
 	if err := Sub("trace", &TraceConfig); err != nil {
 		_ = Logger.Log("Fail to parse trace", err)
 	}
