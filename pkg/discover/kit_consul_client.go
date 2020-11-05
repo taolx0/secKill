@@ -97,7 +97,6 @@ func (consulClient *DiscoveryClientInstance) DeRegister(instanceId string, logge
 }
 
 func (consulClient *DiscoveryClientInstance) DiscoverServices(serviceName string, logger *log.Logger) []*common.ServiceInstance {
-
 	//  该服务已监控并缓存
 	instanceList, ok := consulClient.instancesMap.Load(serviceName)
 	if ok {
@@ -140,7 +139,7 @@ func (consulClient *DiscoveryClientInstance) DiscoverServices(serviceName string
 				consulClient.instancesMap.Store(serviceName, healthServices)
 			}
 			defer plan.Stop()
-			plan.Run(consulClient.config.Address)
+			_ = plan.Run(consulClient.config.Address)
 		}()
 	}
 	defer consulClient.mutex.Unlock()
@@ -160,7 +159,6 @@ func (consulClient *DiscoveryClientInstance) DiscoverServices(serviceName string
 	}
 	consulClient.instancesMap.Store(serviceName, instances)
 	return instances
-
 }
 
 func newServiceInstance(service *api.AgentService) *common.ServiceInstance {
