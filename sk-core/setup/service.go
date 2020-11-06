@@ -2,10 +2,10 @@ package setup
 
 import (
 	"fmt"
-	register "github.com/taolx0/secKill/pkg/discover"
-	"github.com/taolx0/secKill/sk-core/service/srv_redis"
 	"os"
 	"os/signal"
+	register "secKill/pkg/discover"
+	"secKill/sk-core/service/srv_redis"
 	"syscall"
 )
 

@@ -2,8 +2,8 @@ package setup
 
 import (
 	"github.com/coreos/etcd/clientv3"
-	conf "github.com/taolx0/secKill/pkg/config"
 	"log"
+	conf "secKill/pkg/config"
 	"time"
 )
 

@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"github.com/gohouse/gorose/v2"
 	"github.com/samuel/go-zookeeper/zk"
-	conf "github.com/taolx0/secKill/pkg/config"
-	"github.com/taolx0/secKill/sk-admin/model"
 	"github.com/unknwon/com"
 	"log"
+	conf "secKill/pkg/config"
+	"secKill/sk-admin/model"
 	"time"
 )
 

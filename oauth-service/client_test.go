@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/taolx0/secKill/pb"
-	"github.com/taolx0/secKill/pkg/client"
+	"secKill/pb"
+	"secKill/pkg/client"
 	"testing"
 )
 

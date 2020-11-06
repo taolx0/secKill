@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	"github.com/taolx0/secKill/user-service/model"
 	"log"
+	"secKill/user-service/model"
 )
 
 // Service Define a service interface

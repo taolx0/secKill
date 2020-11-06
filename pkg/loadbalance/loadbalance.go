@@ -2,8 +2,8 @@ package loadbalance
 
 import (
 	"errors"
-	"github.com/taolx0/secKill/pkg/common"
 	"math/rand"
+	"secKill/pkg/common"
 )
 
 // 负载均衡器

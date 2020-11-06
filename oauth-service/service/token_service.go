@@ -5,8 +5,8 @@ import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	uuid "github.com/satori/go.uuid"
-	. "github.com/taolx0/secKill/oauth-service/model"
 	"net/http"
+	. "secKill/oauth-service/model"
 	"strconv"
 	"time"
 )

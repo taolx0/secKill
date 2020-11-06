@@ -3,9 +3,9 @@ package srv_redis
 import (
 	"encoding/json"
 	"fmt"
-	conf "github.com/taolx0/secKill/pkg/config"
-	"github.com/taolx0/secKill/sk-core/config"
 	"log"
+	conf "secKill/pkg/config"
+	"secKill/sk-core/config"
 	"time"
 )
 

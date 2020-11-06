@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"errors"
-	"github.com/taolx0/secKill/oauth-service/model"
+	"secKill/oauth-service/model"
 )
 
 var (

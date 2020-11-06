@@ -8,14 +8,14 @@ import (
 	"github.com/openzipkin/zipkin-go"
 	zipKinHttpSvr "github.com/openzipkin/zipkin-go/middleware/http"
 	zipKinHttp "github.com/openzipkin/zipkin-go/reporter/http"
-	_ "github.com/taolx0/secKill/gateway/config"
-	"github.com/taolx0/secKill/gateway/route"
-	"github.com/taolx0/secKill/pkg/bootstrap"
-	register "github.com/taolx0/secKill/pkg/discover"
 	"net"
 	"net/http"
 	"os"
 	"os/signal"
+	_ "secKill/gateway/config"
+	"secKill/gateway/route"
+	"secKill/pkg/bootstrap"
+	register "secKill/pkg/discover"
 	"syscall"
 )
 

@@ -3,7 +3,7 @@ package plugins
 import (
 	"context"
 	"github.com/go-kit/kit/log"
-	"github.com/taolx0/secKill/user-service/service"
+	"secKill/user-service/service"
 	"time"
 )
 
