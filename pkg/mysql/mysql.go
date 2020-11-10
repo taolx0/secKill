@@ -4,14 +4,14 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gohouse/gorose/v2"
+	"log"
 )
 
 var engine *gorose.Engin
 var err error
 
 func InitMysql(hostMysql, portMysql, userMysql, pwdMysql, dbMysql string) {
-	fmt.Printf(userMysql)
-	fmt.Printf(dbMysql)
+	log.Printf("user %s is using database : %s\n", userMysql, dbMysql)
 
 	DbConfig := gorose.Config{
 		// Default database configuration

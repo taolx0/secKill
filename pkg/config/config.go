@@ -35,14 +35,13 @@ func init() {
 	if err := LoadRemoteConfig(); err != nil {
 		_ = Logger.Log("Fail to load remote config", err)
 	}
-
-	//if err := Sub("mysql", &MysqlConfig); err != nil {
-	//	Logger.Log("Fail to parse mysql", err)
-	//}
-
+	if err := Sub("mysql", &MysqlConfig); err != nil {
+		Logger.Log("Fail to parse mysql", err)
+	}
 	if err := Sub("trace", &TraceConfig); err != nil {
 		_ = Logger.Log("Fail to parse trace", err)
 	}
+
 	zipkinUrl := "http://" + TraceConfig.Host + ":" + TraceConfig.Port + TraceConfig.Url
 	_ = Logger.Log("zipkin url", zipkinUrl)
 	initTracer(zipkinUrl)

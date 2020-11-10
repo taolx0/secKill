@@ -1,7 +1,6 @@
 package discover
 
 import (
-	"fmt"
 	"github.com/go-kit/kit/sd/consul"
 	"github.com/hashicorp/consul/api"
 	"github.com/hashicorp/consul/api/watch"
@@ -11,7 +10,6 @@ import (
 )
 
 func New(consulHost string, consulPort string) *DiscoveryClientInstance {
-
 	port, _ := strconv.Atoi(consulPort)
 	// 通过 Consul Host 和 Consul Port 创建一个 consul.Client
 	consulConfig := api.DefaultConfig()
@@ -29,15 +27,12 @@ func New(consulHost string, consulPort string) *DiscoveryClientInstance {
 		config: consulConfig,
 		client: client,
 	}
-
 }
 
 func (consulClient *DiscoveryClientInstance) Register(instanceId, svcHost, healthCheckUrl, svcPort string, svcName string, weight int, meta map[string]string, tags []string, logger *log.Logger) bool {
-
 	port, _ := strconv.Atoi(svcPort)
-
 	// 1. 构建服务实例元数据
-	fmt.Println(weight)
+	log.Println("weight is : ", weight)
 	serviceRegistration := &api.AgentServiceRegistration{
 		ID:      instanceId,
 		Name:    svcName,
@@ -67,9 +62,7 @@ func (consulClient *DiscoveryClientInstance) Register(instanceId, svcHost, healt
 	if logger != nil {
 		logger.Println("Register Service Success!")
 	}
-
 	return true
-
 }
 
 func (consulClient *DiscoveryClientInstance) DeRegister(instanceId string, logger *log.Logger) bool {

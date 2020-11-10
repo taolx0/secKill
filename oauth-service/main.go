@@ -4,7 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	kitzipkin "github.com/go-kit/kit/tracing/zipkin"
+	kitZipkin "github.com/go-kit/kit/tracing/zipkin"
 	"github.com/openzipkin/zipkin-go/propagation/b3"
 	"golang.org/x/time/rate"
 	"google.golang.org/grpc"
@@ -13,7 +13,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	localconfig "secKill/oauth-service/config"
+	localConfig "secKill/oauth-service/config"
 	"secKill/oauth-service/endpoint"
 	"secKill/oauth-service/plugins"
 	"secKill/oauth-service/service"
@@ -28,7 +28,6 @@ import (
 )
 
 func main() {
-
 	var (
 		servicePort = flag.String("service.port", bootstrap.HttpConfig.Port, "service port")
 		grpcAddr    = flag.String("grpc", bootstrap.RpcConfig.Port, "gRPC listen address.")
@@ -39,7 +38,7 @@ func main() {
 	ctx := context.Background()
 	errChan := make(chan error)
 
-	ratebucket := rate.NewLimiter(rate.Every(time.Second*1), 100)
+	rateBucket := rate.NewLimiter(rate.Every(time.Second*1), 100)
 
 	var tokenService service.TokenService
 	var tokenGranter service.TokenGranter
@@ -64,27 +63,27 @@ func main() {
 	})
 
 	tokenEndpoint := endpoint.MakeTokenEndpoint(tokenGranter, clientDetailsService)
-	tokenEndpoint = endpoint.MakeClientAuthorizationMiddleware(localconfig.Logger)(tokenEndpoint)
-	tokenEndpoint = plugins.NewTokenBucketLimitterWithBuildIn(ratebucket)(tokenEndpoint)
-	tokenEndpoint = kitzipkin.TraceEndpoint(localconfig.ZipkinTracer, "token-endpoint")(tokenEndpoint)
+	tokenEndpoint = endpoint.MakeClientAuthorizationMiddleware(localConfig.Logger)(tokenEndpoint)
+	tokenEndpoint = plugins.NewTokenBucketLimitterWithBuildIn(rateBucket)(tokenEndpoint)
+	tokenEndpoint = kitZipkin.TraceEndpoint(localConfig.ZipkinTracer, "token-endpoint")(tokenEndpoint)
 	//tokenEndpoint = plugins.ClientAuthorizationMiddleware(clientDetailsService)(tokenEndpoint)
 
 	checkTokenEndpoint := endpoint.MakeCheckTokenEndpoint(tokenService)
-	checkTokenEndpoint = endpoint.MakeClientAuthorizationMiddleware(localconfig.Logger)(checkTokenEndpoint)
-	checkTokenEndpoint = plugins.NewTokenBucketLimitterWithBuildIn(ratebucket)(checkTokenEndpoint)
-	checkTokenEndpoint = kitzipkin.TraceEndpoint(localconfig.ZipkinTracer, "check-endpoint")(checkTokenEndpoint)
+	checkTokenEndpoint = endpoint.MakeClientAuthorizationMiddleware(localConfig.Logger)(checkTokenEndpoint)
+	checkTokenEndpoint = plugins.NewTokenBucketLimitterWithBuildIn(rateBucket)(checkTokenEndpoint)
+	checkTokenEndpoint = kitZipkin.TraceEndpoint(localConfig.ZipkinTracer, "check-endpoint")(checkTokenEndpoint)
 	//tokenEndpoint = plugins.ClientAuthorizationMiddleware(clientDetailsService)(checkTokenEndpoint)
 
 	gRPCCheckTokenEndpoint := endpoint.MakeCheckTokenEndpoint(tokenService)
-	gRPCCheckTokenEndpoint = plugins.NewTokenBucketLimitterWithBuildIn(ratebucket)(gRPCCheckTokenEndpoint)
-	gRPCCheckTokenEndpoint = kitzipkin.TraceEndpoint(localconfig.ZipkinTracer, "grpc-check-endpoint")(gRPCCheckTokenEndpoint)
+	gRPCCheckTokenEndpoint = plugins.NewTokenBucketLimitterWithBuildIn(rateBucket)(gRPCCheckTokenEndpoint)
+	gRPCCheckTokenEndpoint = kitZipkin.TraceEndpoint(localConfig.ZipkinTracer, "grpc-check-endpoint")(gRPCCheckTokenEndpoint)
 	//tokenEndpoint = plugins.ClientAuthorizationMiddleware(clientDetailsService)(checkTokenEndpoint)
 
 	//创建健康检查的Endpoint
 	healthEndpoint := endpoint.MakeHealthCheckEndpoint(srv)
-	healthEndpoint = kitzipkin.TraceEndpoint(localconfig.ZipkinTracer, "health-endpoint")(healthEndpoint)
+	healthEndpoint = kitZipkin.TraceEndpoint(localConfig.ZipkinTracer, "health-endpoint")(healthEndpoint)
 
-	endpts := endpoint.OAuth2Endpoints{
+	endpoints := endpoint.OAuth2Endpoints{
 		TokenEndpoint:          tokenEndpoint,
 		CheckTokenEndpoint:     checkTokenEndpoint,
 		HealthCheckEndpoint:    healthEndpoint,
@@ -92,7 +91,7 @@ func main() {
 	}
 
 	//创建http.Handler
-	r := transport.MakeHttpHandler(ctx, endpts, tokenService, clientDetailsService, localconfig.ZipkinTracer, localconfig.Logger)
+	r := transport.MakeHttpHandler(ctx, endpoints, tokenService, clientDetailsService, localConfig.ZipkinTracer, localConfig.Logger)
 
 	//http server
 	go func() {
@@ -112,15 +111,15 @@ func main() {
 			errChan <- err
 			return
 		}
-		serverTracer := kitzipkin.GRPCServerTrace(localconfig.ZipkinTracer, kitzipkin.Name("grpc-transport"))
-		tr := localconfig.ZipkinTracer
+		serverTracer := kitZipkin.GRPCServerTrace(localConfig.ZipkinTracer, kitZipkin.Name("grpc-transport"))
+		tr := localConfig.ZipkinTracer
 		md := metadata.MD{}
 		parentSpan := tr.StartSpan("test")
 
-		b3.InjectGRPC(&md)(parentSpan.Context())
+		_ = b3.InjectGRPC(&md)(parentSpan.Context())
 
 		ctx := metadata.NewIncomingContext(context.Background(), md)
-		handler := transport.NewGRPCServer(ctx, endpts, serverTracer)
+		handler := transport.NewGRPCServer(ctx, endpoints, serverTracer)
 		gRPCServer := grpc.NewServer()
 		pb.RegisterOAuthServiceServer(gRPCServer, handler)
 		errChan <- gRPCServer.Serve(listener)
@@ -132,9 +131,8 @@ func main() {
 		errChan <- fmt.Errorf("%s", <-c)
 	}()
 
-	error := <-errChan
+	err := <-errChan
 	//服务退出取消注册
 	register.Deregister()
-	fmt.Println(error)
-
+	fmt.Println(err)
 }

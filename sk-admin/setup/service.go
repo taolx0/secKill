@@ -23,9 +23,8 @@ import (
 )
 
 //初始化Http服务
-func InitServer(host string, servicePort string) {
-
-	log.Printf("port is ", servicePort)
+func InitServer(serviceHost string, servicePort string) {
+	log.Printf("initial service , port is %s\n", servicePort)
 
 	flag.Parse()
 
@@ -53,6 +52,7 @@ func InitServer(host string, servicePort string) {
 		productService  service.ProductService
 		skAdminService  service.Service
 	)
+
 	skAdminService = service.SkAdminService{}
 	activityService = service.ActivityServiceImpl{}
 	productService = service.ProductServiceImpl{}
@@ -104,7 +104,7 @@ func InitServer(host string, servicePort string) {
 		//启动前执行注册
 		register.Register()
 		handler := r
-		errChan <- http.ListenAndServe(":"+servicePort, handler)
+		errChan <- http.ListenAndServe(serviceHost+":"+servicePort, handler)
 	}()
 
 	go func() {
@@ -113,8 +113,9 @@ func InitServer(host string, servicePort string) {
 		errChan <- fmt.Errorf("%s", <-c)
 	}()
 
-	error := <-errChan
+	err := <-errChan
 	//服务退出取消注册
 	register.Deregister()
-	fmt.Println(error)
+	log.Println("sk-admin service deregister")
+	fmt.Println(err)
 }

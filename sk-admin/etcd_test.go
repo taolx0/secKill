@@ -10,7 +10,6 @@ import (
 )
 
 func TestMain(m *testing.M) {
-
 	cli, err := clientv3.New(clientv3.Config{
 		Endpoints:   []string{"39.98.179.73:2379"}, // conf.Etcd.Host
 		DialTimeout: 5 * time.Second,
