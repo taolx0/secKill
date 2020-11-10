@@ -2,10 +2,8 @@ package discover
 
 import (
 	"errors"
-	"fmt"
 	uuid "github.com/satori/go.uuid"
 	"log"
-	"net/http"
 	"os"
 	"secKill/pkg/bootstrap"
 	"secKill/pkg/common"
@@ -24,14 +22,13 @@ func init() {
 	Logger = log.New(os.Stderr, "", log.LstdFlags)
 }
 
-//
-func CheckHealth(writer http.ResponseWriter, reader *http.Request) {
-	Logger.Println("Health check!")
-	_, err := fmt.Fprintln(writer, "Server is OK!")
-	if err != nil {
-		Logger.Println(err)
-	}
-}
+//func CheckHealth(writer http.ResponseWriter, reader *http.Request) {
+//	Logger.Println("Health check!")
+//	_, err := fmt.Fprintln(writer, "Server is OK!")
+//	if err != nil {
+//		Logger.Println(err)
+//	}
+//}
 
 func DiscoveryService(serviceName string) (*common.ServiceInstance, error) {
 	instances := ConsulService.DiscoverServices(serviceName, Logger)

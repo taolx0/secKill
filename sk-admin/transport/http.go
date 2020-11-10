@@ -3,60 +3,59 @@ package transport
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/tracing/zipkin"
 	"github.com/go-kit/kit/transport"
-	kithttp "github.com/go-kit/kit/transport/http"
+	kitHttp "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	gozipkin "github.com/openzipkin/zipkin-go"
+	goZipkin "github.com/openzipkin/zipkin-go"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
 	"os"
-	endpts "secKill/sk-admin/endpoint"
+	endpoints "secKill/sk-admin/endpoint"
 	"secKill/sk-admin/model"
 )
 
 var (
-	ErrorBadRequest = errors.New("invalid request parameter")
+//ErrorBadRequest = errors.New("invalid request parameter")
 )
 
 // MakeHttpHandler make http handler use mux
-func MakeHttpHandler(ctx context.Context, endpoints endpts.SkAdminEndpoints, zipkinTracer *gozipkin.Tracer, logger log.Logger) http.Handler {
+func MakeHttpHandler(_ context.Context, endpoints endpoints.SkAdminEndpoints, zipkinTracer *goZipkin.Tracer, logger log.Logger) http.Handler {
 	r := mux.NewRouter()
 	zipkinServer := zipkin.HTTPServerTrace(zipkinTracer, zipkin.Name("http-transport"))
 
-	options := []kithttp.ServerOption{
-		//kithttp.ServerErrorLogger(logger),
-		kithttp.ServerErrorHandler(transport.NewLogErrorHandler(logger)),
-		//kithttp.ServerErrorEncoder(kithttp.DefaultErrorEncoder),
-		kithttp.ServerErrorEncoder(encodeError),
+	options := []kitHttp.ServerOption{
+		//kitHttp.ServerErrorLogger(logger),
+		kitHttp.ServerErrorHandler(transport.NewLogErrorHandler(logger)),
+		//kitHttp.ServerErrorEncoder(kitHttp.DefaultErrorEncoder),
+		kitHttp.ServerErrorEncoder(encodeError),
 		zipkinServer,
 	}
 
-	r.Methods("GET").Path("/product/list").Handler(kithttp.NewServer(
+	r.Methods("GET").Path("/product/list").Handler(kitHttp.NewServer(
 		endpoints.GetProductEndpoint,
 		decodeGetListRequest,
 		encodeResponse,
 		options...,
 	))
 
-	r.Methods("POST").Path("/product/create").Handler(kithttp.NewServer(
+	r.Methods("POST").Path("/product/create").Handler(kitHttp.NewServer(
 		endpoints.GetProductEndpoint,
 		decodeCreateProductCheckRequest,
 		encodeResponse,
 		options...,
 	))
 
-	r.Methods("POST").Path("/activity/create").Handler(kithttp.NewServer(
+	r.Methods("POST").Path("/activity/create").Handler(kitHttp.NewServer(
 		endpoints.CreateActivityEndpoint,
 		decodeCreateActivityCheckRequest,
 		encodeResponse,
 		options...,
 	))
 
-	r.Methods("GET").Path("/activity/list").Handler(kithttp.NewServer(
+	r.Methods("GET").Path("/activity/list").Handler(kitHttp.NewServer(
 		endpoints.GetActivityEndpoint,
 		decodeGetListRequest,
 		encodeResponse,
@@ -66,7 +65,7 @@ func MakeHttpHandler(ctx context.Context, endpoints endpts.SkAdminEndpoints, zip
 	r.Path("/metrics").Handler(promhttp.Handler())
 
 	// create health check handler
-	r.Methods("GET").Path("/health").Handler(kithttp.NewServer(
+	r.Methods("GET").Path("/health").Handler(kitHttp.NewServer(
 		endpoints.HealthCheckEndpoint,
 		decodeHealthCheckRequest,
 		encodeResponse,
@@ -79,8 +78,8 @@ func MakeHttpHandler(ctx context.Context, endpoints endpts.SkAdminEndpoints, zip
 }
 
 // decodeUserRequest decode request params to struct
-func decodeGetListRequest(_ context.Context, r *http.Request) (interface{}, error) {
-	return endpts.GetListRequest{}, nil
+func decodeGetListRequest(_ context.Context, _ *http.Request) (interface{}, error) {
+	return endpoints.GetListRequest{}, nil
 }
 
 // encode errors from business-logic
@@ -90,23 +89,23 @@ func encodeError(_ context.Context, err error, w http.ResponseWriter) {
 	default:
 		w.WriteHeader(http.StatusInternalServerError)
 	}
-	json.NewEncoder(w).Encode(map[string]interface{}{
+	_ = json.NewEncoder(w).Encode(map[string]interface{}{
 		"error": err.Error(),
 	})
 }
 
 // encodeArithmeticResponse encode response to return
-func encodeResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
+func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	w.Header().Set("Content-Type", "application/json;charset=utf-8")
 	return json.NewEncoder(w).Encode(response)
 }
 
 // decodeHealthCheckRequest decode request
-func decodeHealthCheckRequest(ctx context.Context, r *http.Request) (interface{}, error) {
-	return endpts.HealthRequest{}, nil
+func decodeHealthCheckRequest(_ context.Context, _ *http.Request) (interface{}, error) {
+	return endpoints.HealthRequest{}, nil
 }
 
-func decodeCreateProductCheckRequest(ctx context.Context, r *http.Request) (interface{}, error) {
+func decodeCreateProductCheckRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var product model.Product
 	if err := json.NewDecoder(r.Body).Decode(&product); err != nil {
 		return nil, err
@@ -114,7 +113,7 @@ func decodeCreateProductCheckRequest(ctx context.Context, r *http.Request) (inte
 	return product, nil
 }
 
-func decodeCreateActivityCheckRequest(ctx context.Context, r *http.Request) (interface{}, error) {
+func decodeCreateActivityCheckRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var activity model.Activity
 	if err := json.NewDecoder(r.Body).Decode(&activity); err != nil {
 		return nil, err

@@ -15,7 +15,6 @@ func RunService() {
 	errChan := make(chan error)
 	//http server
 	go func() {
-		//启动前执行注册
 		register.Register()
 	}()
 

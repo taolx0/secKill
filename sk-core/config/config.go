@@ -19,7 +19,7 @@ const (
 	kConfigType = "CONFIG_TYPE"
 )
 
-var ZipkinTracer *zipkin.Tracer
+//var ZipkinTracer *zipkin.Tracer
 var Logger log.Logger
 
 func init() {
@@ -66,7 +66,7 @@ func initTracer(zipkinURL string) {
 	)
 	//defer reporter.Close()
 	zEP, _ := zipkin.NewEndpoint(bootstrap.DiscoverConfig.ServiceName, bootstrap.HttpConfig.Port)
-	ZipkinTracer, err = zipkin.NewTracer(
+	_, err = zipkin.NewTracer(
 		reporter, zipkin.WithLocalEndpoint(zEP), zipkin.WithNoopTracer(useNoopTracer),
 	)
 	if err != nil {
@@ -85,7 +85,7 @@ var SecLayerCtx = &SecLayerContext{
 	ProductCountMgr:  srv_product.NewProductCountMgr(),
 }
 
-var CoreCtx = &SkAppCtx{}
+//var CoreCtx = &SkAppCtx{}
 
 type SecResult struct {
 	ProductId int    `json:"product_id"` //商品ID
@@ -118,11 +118,11 @@ type SkAppCtx struct {
 	UserConnMapLock sync.Mutex
 }
 
-const (
-	ProductStatusNormal       = 0 //商品状态正常
-	ProductStatusSaleOut      = 1 //商品售罄
-	ProductStatusForceSaleOut = 2 //商品强制售罄
-)
+//const (
+//	ProductStatusNormal       = 0 //商品状态正常
+//	ProductStatusSaleOut      = 1 //商品售罄
+//	ProductStatusForceSaleOut = 2 //商品强制售罄
+//)
 
 type SecLayerContext struct {
 	RWSecProductLock sync.RWMutex

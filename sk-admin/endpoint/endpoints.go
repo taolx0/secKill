@@ -2,7 +2,6 @@ package endpoint
 
 import (
 	"context"
-	"errors"
 	"github.com/go-kit/kit/endpoint"
 	"github.com/gohouse/gorose/v2"
 	"log"
@@ -24,7 +23,7 @@ func (ue SkAdminEndpoints) HealthCheck() bool {
 }
 
 var (
-	ErrInvalidRequestType = errors.New("invalid username, password")
+//ErrInvalidRequestType = errors.New("invalid username, password")
 )
 
 // UserRequest define request struct
