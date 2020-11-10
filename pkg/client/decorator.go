@@ -82,11 +82,9 @@ func (manager *DefaultClientManager) DecoratorInvoke(path string, hystrixName st
 		}
 		return nil
 	}
-
 }
 
 func genTracer(tracer opentracing.Tracer) opentracing.Tracer {
-
 	if tracer != nil {
 		return tracer
 	}
@@ -107,5 +105,4 @@ func genTracer(tracer opentracing.Tracer) opentracing.Tracer {
 	}
 
 	return res
-
 }
