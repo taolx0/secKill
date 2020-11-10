@@ -1,16 +1,17 @@
 http:
-  host: localhost
-  port: 9030
+  host: 127.0.0.1
+  port: 9032
 
 rpc:
   host: localhost
   port: 9132
 
 discover:
-  Host: 114.67.98.210
+  Host: 127.0.0.1
   port: 8500
   instanceId: sk-admin-localhost
   serviceName: sk-admin
+  weight: 1
 
 config:
   id: config-service
