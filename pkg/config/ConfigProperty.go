@@ -70,7 +70,7 @@ type SecKillConf struct {
 	WriteProxy2LayerGoroutineNum int
 	ReadProxy2LayerGoroutineNum  int
 
-	IPBlackMap map[int]bool
+	IPBlackMap map[string]bool
 	IDBlackMap map[int]bool
 
 	SecProductInfoMap map[int]*SecProductInfoConf

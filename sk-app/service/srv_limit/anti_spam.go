@@ -31,7 +31,7 @@ func AntiSpam(req *model.SecRequest) (err error) {
 	}
 
 	//判断客户端IP是否在黑名单
-	_, ok = conf.SecKill.IPBlackMap[req.ClientAddr]
+	_, ok = conf.SecKill.IPBlackMap[string(rune(req.ClientAddr))]
 	if ok {
 		err = fmt.Errorf("invalid request")
 		log.Printf("userId[%v] ip[%v] is block by ip black", req.UserId, req.ClientAddr)

@@ -38,7 +38,6 @@ func loadSecConf(conn *zk.Conn) {
 	if err1 != nil {
 		log.Printf("Unmsharl second product info failed, err : %v", err1)
 	}
-
 	updateSecProductInfo(secProductInfo)
 }
 
