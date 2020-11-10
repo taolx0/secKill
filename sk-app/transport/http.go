@@ -3,7 +3,6 @@ package transport
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/tracing/zipkin"
 	"github.com/go-kit/kit/transport"
@@ -16,9 +15,9 @@ import (
 	"secKill/sk-app/model"
 )
 
-var (
-	ErrorBadRequest = errors.New("invalid request parameter")
-)
+//var (
+//	ErrorBadRequest = errors.New("invalid request parameter")
+//)
 
 // MakeHttpHandler make http handler use mux
 func MakeHttpHandler(_ context.Context, endpoints endpoints.SkAppEndpoints, zipkinTracer *goZipkin.Tracer, logger log.Logger) http.Handler {

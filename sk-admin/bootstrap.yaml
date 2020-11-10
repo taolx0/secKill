@@ -1,6 +1,6 @@
 http:
   host: 127.0.0.1
-  port: 9032
+  port: 9030
 
 rpc:
   host: localhost
