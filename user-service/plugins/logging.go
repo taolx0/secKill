@@ -22,7 +22,6 @@ func LoggingMiddleware(logger log.Logger) service.ServiceMiddleware {
 }
 
 func (mw loggingMiddleware) Check(ctx context.Context, a, b string) (ret int64, err error) {
-
 	defer func(begin time.Time) {
 		_ = mw.logger.Log(
 			"function", "Check",
@@ -40,7 +39,7 @@ func (mw loggingMiddleware) Check(ctx context.Context, a, b string) (ret int64, 
 func (mw loggingMiddleware) HealthCheck() (result bool) {
 	defer func(begin time.Time) {
 		_ = mw.logger.Log(
-			"function", "HealthChcek",
+			"function", "HealthCheck",
 			"result", result,
 			"took", time.Since(begin),
 		)
