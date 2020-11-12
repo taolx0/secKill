@@ -1,7 +1,7 @@
 package setup
 
 import (
-	"github.com/coreos/etcd/clientv3"
+	"go.etcd.io/etcd/clientv3"
 	"log"
 	conf "secKill/pkg/config"
 	"time"
