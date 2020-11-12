@@ -38,12 +38,12 @@ func TestInitZK(t *testing.T) {
 	var data = []byte("hello")
 	var flags int32 = 0
 	// permission
-	var acls = zk.WorldACL(zk.PermAll)
+	var calls = zk.WorldACL(zk.PermAll)
 
 	// create
-	p, err_create := conn.Create(path, data, flags, acls)
-	if err_create != nil {
-		fmt.Println(err_create)
+	p, errCreate := conn.Create(path, data, flags, calls)
+	if errCreate != nil {
+		fmt.Println(errCreate)
 		return
 	}
 	fmt.Println("created:", p)
