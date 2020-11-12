@@ -87,7 +87,7 @@ func InitServer(serviceHost string, servicePort string) {
 	healthEndpoint := endpoint.MakeHealthCheckEndpoint(skAdminService)
 	healthEndpoint = kitzipkin.TraceEndpoint(config.ZipkinTracer, "health-endpoint")(healthEndpoint)
 
-	endpts := endpoint.SkAdminEndpoints{
+	endpoints := endpoint.SkAdminEndpoints{
 		GetActivityEndpoint:    GetActivityEnd,
 		CreateActivityEndpoint: createActivityEnd,
 		CreateProductEndpoint:  createProductEnd,
@@ -96,7 +96,7 @@ func InitServer(serviceHost string, servicePort string) {
 	}
 	ctx := context.Background()
 	//创建http.Handler
-	r := transport.MakeHttpHandler(ctx, endpts, config.ZipkinTracer, config.Logger)
+	r := transport.MakeHttpHandler(ctx, endpoints, config.ZipkinTracer, config.Logger)
 
 	//http server
 	go func() {
