@@ -10,14 +10,14 @@ import (
 
 //限制管理
 type SecLimitMgr struct {
-	UserLimitMap map[int]*Limit
-	IpLimitMap   map[int]*Limit
+	UserLimitMap map[string]*Limit
+	IpLimitMap   map[string]*Limit
 	lock         sync.Mutex
 }
 
 var SecLimitMgrVars = &SecLimitMgr{
-	UserLimitMap: make(map[int]*Limit),
-	IpLimitMap:   make(map[int]*Limit),
+	UserLimitMap: make(map[string]*Limit),
+	IpLimitMap:   make(map[string]*Limit),
 }
 
 //防作弊
@@ -31,7 +31,7 @@ func AntiSpam(req *model.SecRequest) (err error) {
 	}
 
 	//判断客户端IP是否在黑名单
-	_, ok = conf.SecKill.IPBlackMap[string(rune(req.ClientAddr))]
+	_, ok = conf.SecKill.IPBlackMap[req.ClientAddr]
 	if ok {
 		err = fmt.Errorf("invalid request")
 		log.Printf("userId[%v] ip[%v] is block by ip black", req.UserId, req.ClientAddr)
@@ -42,7 +42,7 @@ func AntiSpam(req *model.SecRequest) (err error) {
 	SecLimitMgrVars.lock.Lock()
 	{
 		//用户Id频率控制
-		limit, ok := SecLimitMgrVars.UserLimitMap[req.UserId]
+		limit, ok := SecLimitMgrVars.UserLimitMap[string(rune(req.UserId))]
 		if !ok {
 			limit = &Limit{
 				secLimit: &SecLimit{},
