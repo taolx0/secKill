@@ -3,7 +3,6 @@ package service
 import (
 	"fmt"
 	"log"
-	"math/rand"
 	conf "secKill/pkg/config"
 	"secKill/sk-app/config"
 	"secKill/sk-app/model"
@@ -14,7 +13,6 @@ import (
 
 // Service Define a service interface
 type Service interface {
-	// HealthCheck check service health status
 	HealthCheck() bool
 	SecInfo(productId int) (date map[string]interface{})
 	SecKill(req *model.SecRequest) (map[string]interface{}, int, error)
@@ -65,7 +63,7 @@ func (s SkAppService) SecKill(req *model.SecRequest) (map[string]interface{}, in
 
 	data, code, err := SecInfoById(req.ProductId)
 	if err != nil {
-		log.Printf("userId[%d] secInfoById Id failed, req[%v]", req.UserId, req)
+		log.Printf("userId[%d] secInfoById failed, req[%v]", req.UserId, req)
 		return nil, code, err
 	}
 
@@ -170,7 +168,6 @@ func SecInfoById(productId int) (map[string]interface{}, int, error) {
 		status = "second kill is already end"
 		code = srv_err.ErrActiveAlreadyEnd
 		err = fmt.Errorf(status)
-
 	}
 
 	//商品已经被停止或售磬
@@ -180,20 +177,18 @@ func SecInfoById(productId int) (map[string]interface{}, int, error) {
 		status = "product is sale out"
 		code = srv_err.ErrActiveSaleOut
 		err = fmt.Errorf(status)
-
 	}
 
-	curRate := rand.Float64()
-	/**
-	 * 放大于购买比率的1.5倍的请求进入core层
-	 */
-	if curRate > v.BuyRate*1.5 {
-		start = false
-		end = false
-		status = "retry"
-		code = srv_err.ErrRetry
-		err = fmt.Errorf(status)
-	}
+	//curRate := rand.Float64()
+
+	//放大于购买比率的1.5倍的请求进入core层
+	//if curRate > v.BuyRate*1.5 {
+	//	start = false
+	//	end = false
+	//	status = "retry"
+	//	code = srv_err.ErrRetry
+	//	err = fmt.Errorf(status)
+	//}
 
 	//组装数据
 	data := map[string]interface{}{
