@@ -1,9 +1,9 @@
 package conf
 
 import (
-	"github.com/coreos/etcd/clientv3"
 	"github.com/go-redis/redis"
 	"github.com/samuel/go-zookeeper/zk"
+	"go.etcd.io/etcd/clientv3"
 	"secKill/sk-core/service/srv_limit"
 	"sync"
 )
