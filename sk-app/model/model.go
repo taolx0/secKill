@@ -9,7 +9,7 @@ type SecRequest struct {
 	UserId          int             `json:"user_id"`
 	UserAuthSign    string          `json:"user_auth_sign"` //用户授权签名
 	AccessTime      int64           `json:"access_time"`
-	ClientAddr      int             `json:"client_addr"`
+	ClientAddr      string          `json:"client_addr"`
 	ClientReference string          `json:"client_reference"`
 	CloseNotify     <-chan bool     `json:"-"`
 	ResultChan      chan *SecResult `json:"-"`
