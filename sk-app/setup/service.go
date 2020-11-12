@@ -98,7 +98,7 @@ func InitServer(host string, servicePort string) {
 		//启动前执行注册
 		register.Register()
 		handler := r
-		errChan <- http.ListenAndServe(":"+servicePort, handler)
+		errChan <- http.ListenAndServe(host+":"+servicePort, handler)
 	}()
 
 	go func() {
