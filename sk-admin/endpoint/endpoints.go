@@ -60,7 +60,6 @@ func MakeGetActivityEndpoint(svc service.ActivityService) endpoint.Endpoint {
 func MakeCreateActivityEndpoint(svc service.ActivityService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(model.Activity)
-
 		calError := svc.CreateActivity(&req)
 		return CreateResponse{Error: calError}, nil
 	}
