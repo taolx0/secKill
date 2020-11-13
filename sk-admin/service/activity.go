@@ -76,6 +76,70 @@ func (p ActivityServiceImpl) CreateActivity(activity *model.Activity) error {
 	return nil
 }
 
+//将商品活动数据同步到Etcd
+func (p ActivityServiceImpl) syncToEtcd(activity *model.Activity) error {
+	log.Print("syncToEtcd")
+
+	etcdKey := conf.Etcd.EtcdSecProductKey
+	secProductInfoList, err := p.loadProductFromEtcd(etcdKey)
+	if err != nil {
+		return err
+	}
+
+	var secProductInfo = &model.SecProductInfoConf{}
+	secProductInfo.EndTime = activity.EndTime
+	secProductInfo.OnePersonBuyLimit = activity.BuyLimit
+	secProductInfo.ProductId = activity.ProductId
+	secProductInfo.SoldMaxLimit = activity.Speed
+	secProductInfo.StartTime = activity.StartTime
+	secProductInfo.Status = activity.Status
+	secProductInfo.Total = activity.Total
+	secProductInfo.BuyRate = activity.BuyRate
+	secProductInfoList = append(secProductInfoList, secProductInfo)
+
+	data, err := json.Marshal(secProductInfoList)
+	if err != nil {
+		log.Printf("json marshal failed, err : %v", err)
+		return err
+	}
+
+	conn := conf.Etcd.EtcdConn
+	_, err = conn.Put(context.Background(), etcdKey, string(data))
+	if err != nil {
+		log.Printf("put to etcd failed, err : %v, data = [%v]", err, string(data))
+		return err
+	}
+
+	log.Printf("put to etcd success, data = [%v]", string(data))
+	return nil
+}
+
+//从Etcd中取出原来的商品数据
+func (p ActivityServiceImpl) loadProductFromEtcd(key string) ([]*model.SecProductInfoConf, error) {
+	log.Println("start get from etcd success")
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	rsp, err := conf.Etcd.EtcdConn.Get(ctx, key)
+	if err != nil {
+		log.Printf("get [%s] from etcd failed, err : %v", key, err)
+		return nil, err
+	}
+	log.Printf("get from etcd success, rsp : %v", rsp)
+
+	var secProductInfo []*model.SecProductInfoConf
+	for k, v := range rsp.Kvs {
+		log.Printf("key = [%v], value = [%v]", k, v)
+		err := json.Unmarshal(v.Value, &secProductInfo)
+		if err != nil {
+			log.Printf("Unmsharl second product info failed, err : %v", err)
+			return nil, err
+		}
+		log.Printf("second info conf is [%v]", secProductInfo)
+	}
+
+	return secProductInfo, nil
+}
+
 //func (p ActivityServiceImpl) syncToZk(activity *model.Activity) error {
 //
 //	zkPath := conf.Zk.SecProductKey
@@ -146,67 +210,3 @@ func (p ActivityServiceImpl) CreateActivity(activity *model.Activity) error {
 //	}
 //	return secProductInfo, nil
 //}
-
-//将商品活动数据同步到Etcd
-func (p ActivityServiceImpl) syncToEtcd(activity *model.Activity) error {
-	log.Print("syncToEtcd")
-
-	etcdKey := conf.Etcd.EtcdSecProductKey
-	secProductInfoList, err := p.loadProductFromEtcd(etcdKey)
-	if err != nil {
-		return err
-	}
-
-	var secProductInfo = &model.SecProductInfoConf{}
-	secProductInfo.EndTime = activity.EndTime
-	secProductInfo.OnePersonBuyLimit = activity.BuyLimit
-	secProductInfo.ProductId = activity.ProductId
-	secProductInfo.SoldMaxLimit = activity.Speed
-	secProductInfo.StartTime = activity.StartTime
-	secProductInfo.Status = activity.Status
-	secProductInfo.Total = activity.Total
-	secProductInfo.BuyRate = activity.BuyRate
-	secProductInfoList = append(secProductInfoList, secProductInfo)
-
-	data, err := json.Marshal(secProductInfoList)
-	if err != nil {
-		log.Printf("json marshal failed, err : %v", err)
-		return err
-	}
-
-	conn := conf.Etcd.EtcdConn
-	_, err = conn.Put(context.Background(), etcdKey, string(data))
-	if err != nil {
-		log.Printf("put to etcd failed, err : %v, data = [%v]", err, string(data))
-		return err
-	}
-
-	log.Printf("put to etcd success, data = [%v]", string(data))
-	return nil
-}
-
-//从Etcd中取出原来的商品数据
-func (p ActivityServiceImpl) loadProductFromEtcd(key string) ([]*model.SecProductInfoConf, error) {
-	log.Println("start get from etcd success")
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
-	defer cancel()
-	rsp, err := conf.Etcd.EtcdConn.Get(ctx, key)
-	if err != nil {
-		log.Printf("get [%s] from etcd failed, err : %v", key, err)
-		return nil, err
-	}
-	log.Printf("get from etcd success, rsp : %v", rsp)
-
-	var secProductInfo []*model.SecProductInfoConf
-	for k, v := range rsp.Kvs {
-		log.Printf("key = [%v], value = [%v]", k, v)
-		err := json.Unmarshal(v.Value, &secProductInfo)
-		if err != nil {
-			log.Printf("Unmsharl second product info failed, err : %v", err)
-			return nil, err
-		}
-		log.Printf("second info conf is [%v]", secProductInfo)
-	}
-
-	return secProductInfo, nil
-}
