@@ -65,8 +65,8 @@ func (p ActivityServiceImpl) CreateActivity(activity *model.Activity) error {
 		log.Printf("ActivityModel.CreateActivity, err : %v", err)
 		return err
 	}
-
-	log.Printf("syncToEtcd")
+	log.Println("write to database success!")
+	log.Println("syncToEtcd")
 	//写入到Etcd
 	err = p.syncToEtcd(activity)
 	if err != nil {
