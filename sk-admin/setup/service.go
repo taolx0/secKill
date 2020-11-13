@@ -68,19 +68,19 @@ func InitServer(serviceHost string, servicePort string) {
 	productService = plugins.ProductMetrics(requestCount, requestLatency)(productService)
 
 	createActivityEnd := endpoint.MakeCreateActivityEndpoint(activityService)
-	createActivityEnd = plugins.NewTokenBucketLimitterWithBuildIn(ratebucket)(createActivityEnd)
+	createActivityEnd = plugins.NewTokenBucketLimiterWithBuildIn(ratebucket)(createActivityEnd)
 	createActivityEnd = kitzipkin.TraceEndpoint(config.ZipkinTracer, "create-activity")(createActivityEnd)
 
 	GetActivityEnd := endpoint.MakeGetActivityEndpoint(activityService)
-	GetActivityEnd = plugins.NewTokenBucketLimitterWithBuildIn(ratebucket)(GetActivityEnd)
+	GetActivityEnd = plugins.NewTokenBucketLimiterWithBuildIn(ratebucket)(GetActivityEnd)
 	GetActivityEnd = kitzipkin.TraceEndpoint(config.ZipkinTracer, "get-activity")(GetActivityEnd)
 
 	createProductEnd := endpoint.MakeCreateProductEndpoint(productService)
-	createProductEnd = plugins.NewTokenBucketLimitterWithBuildIn(ratebucket)(createProductEnd)
+	createProductEnd = plugins.NewTokenBucketLimiterWithBuildIn(ratebucket)(createProductEnd)
 	createProductEnd = kitzipkin.TraceEndpoint(config.ZipkinTracer, "create-product")(createProductEnd)
 
 	GetProductEnd := endpoint.MakeGetProductEndpoint(productService)
-	GetProductEnd = plugins.NewTokenBucketLimitterWithBuildIn(ratebucket)(GetProductEnd)
+	GetProductEnd = plugins.NewTokenBucketLimiterWithBuildIn(ratebucket)(GetProductEnd)
 	GetProductEnd = kitzipkin.TraceEndpoint(config.ZipkinTracer, "get-product")(GetProductEnd)
 
 	//创建健康检查的Endpoint
