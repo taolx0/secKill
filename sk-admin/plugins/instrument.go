@@ -6,29 +6,28 @@ import (
 	"github.com/go-kit/kit/endpoint"
 	"github.com/go-kit/kit/metrics"
 	"github.com/gohouse/gorose/v2"
-	"github.com/juju/ratelimit"
 	"golang.org/x/time/rate"
 	"secKill/sk-admin/model"
 	"secKill/sk-admin/service"
 	"time"
 )
 
-var ErrLimitExceed = errors.New("Rate limit exceed!")
+var ErrLimitExceed = errors.New("rate limit exceed")
 
-// NewTokenBucketLimitterWithJuju 使用juju/ratelimit创建限流中间件
-func NewTokenBucketLimitterWithJuju(bkt *ratelimit.Bucket) endpoint.Middleware {
-	return func(next endpoint.Endpoint) endpoint.Endpoint {
-		return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-			if bkt.TakeAvailable(1) == 0 {
-				return nil, ErrLimitExceed
-			}
-			return next(ctx, request)
-		}
-	}
-}
+// NewTokenBucketLimiterWithJuju 使用juju/rateLimit创建限流中间件
+//func NewTokenBucketLimiterWithJuju(bkt *ratelimit.Bucket) endpoint.Middleware {
+//	return func(next endpoint.Endpoint) endpoint.Endpoint {
+//		return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+//			if bkt.TakeAvailable(1) == 0 {
+//				return nil, ErrLimitExceed
+//			}
+//			return next(ctx, request)
+//		}
+//	}
+//}
 
-// NewTokenBucketLimitterWithBuildIn 使用x/time/rate创建限流中间件
-func NewTokenBucketLimitterWithBuildIn(bkt *rate.Limiter) endpoint.Middleware {
+// NewTokenBucketLimiterWithBuildIn 使用x/time/rate创建限流中间件
+func NewTokenBucketLimiterWithBuildIn(bkt *rate.Limiter) endpoint.Middleware {
 	return func(next endpoint.Endpoint) endpoint.Endpoint {
 		return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			if !bkt.Allow() {
@@ -109,8 +108,8 @@ func (mw productMetricMiddleware) CreateProduct(product *model.Product) error {
 		mw.requestLatency.With(lvs...).Observe(time.Since(begin).Seconds())
 	}(time.Now())
 
-	error := mw.ProductService.CreateProduct(product)
-	return error
+	err := mw.ProductService.CreateProduct(product)
+	return err
 }
 
 func (mw productMetricMiddleware) GetProductList() ([]gorose.Data, error) {
@@ -121,8 +120,8 @@ func (mw productMetricMiddleware) GetProductList() ([]gorose.Data, error) {
 		mw.requestLatency.With(lvs...).Observe(time.Since(begin).Seconds())
 	}(time.Now())
 
-	data, error := mw.ProductService.GetProductList()
-	return data, error
+	data, err := mw.ProductService.GetProductList()
+	return data, err
 }
 
 func (mw activityMetricMiddleware) GetActivityList() ([]gorose.Data, error) {
@@ -133,8 +132,8 @@ func (mw activityMetricMiddleware) GetActivityList() ([]gorose.Data, error) {
 		mw.requestLatency.With(lvs...).Observe(time.Since(begin).Seconds())
 	}(time.Now())
 
-	result, error := mw.ActivityService.GetActivityList()
-	return result, error
+	result, err := mw.ActivityService.GetActivityList()
+	return result, err
 }
 
 func (mw activityMetricMiddleware) CreateActivity(activity *model.Activity) error {
@@ -145,6 +144,6 @@ func (mw activityMetricMiddleware) CreateActivity(activity *model.Activity) erro
 		mw.requestLatency.With(lvs...).Observe(time.Since(begin).Seconds())
 	}(time.Now())
 
-	error := mw.ActivityService.CreateActivity(activity)
-	return error
+	err := mw.ActivityService.CreateActivity(activity)
+	return err
 }
