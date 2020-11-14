@@ -89,14 +89,13 @@ func HandleWrite() {
 func sendToRedis(res *config.SecResult) (err error) {
 	data, err := json.Marshal(res)
 	if err != nil {
-		log.Printf("marshal failed, err : %v", err)
+		log.Printf("marshal failed , err : %v", err)
 		return
 	}
 
 	fmt.Printf("推入队列前... %v", conf.Redis.Layer2proxyQueueName)
 	conn := conf.Redis.RedisConn
 	err = conn.LPush(conf.Redis.Layer2proxyQueueName, string(data)).Err()
-	fmt.Println("推入队列后...")
 	if err != nil {
 		log.Printf("rpush layer to proxy redis queue failed, err : %v", err)
 		return
