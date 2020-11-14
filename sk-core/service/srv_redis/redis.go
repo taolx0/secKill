@@ -73,7 +73,7 @@ func HandleReader() {
 }
 
 func HandleWrite() {
-	log.Println("handle write running")
+	log.Println("handling core to app writing")
 
 	for res := range config.SecLayerCtx.Handle2WriteChan {
 		fmt.Println("===", res)
