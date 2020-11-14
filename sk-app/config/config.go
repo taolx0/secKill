@@ -83,9 +83,8 @@ type SkAppCtx struct {
 	SecReqChan       chan *model.SecRequest
 	SecReqChanSize   int
 	RWSecProductLock sync.RWMutex
-
-	UserConnMap     map[string]chan *model.SecResult
-	UserConnMapLock sync.Mutex
+	UserConnMap      map[string]chan *model.SecResult
+	UserConnMapLock  sync.Mutex
 }
 
 const (
