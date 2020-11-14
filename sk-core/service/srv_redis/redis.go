@@ -52,13 +52,13 @@ func HandleReader() {
 			}
 
 			//判断是否超时
-			nowTime := time.Now().Unix()
+			//nowTime := time.Now().Unix()
 			//int64(config.SecLayerCtx.SecLayerConf.MaxRequestWaitTimeout)
-			fmt.Println(nowTime, " ", req.SecTime, " ", 100)
-			if nowTime-req.SecTime >= int64(conf.SecKill.MaxRequestWaitTimeout) {
-				log.Printf("req[%v] is expire", req)
-				continue
-			}
+			//fmt.Println(nowTime, " ", req.SecTime, " ", 100)
+			//if nowTime-req.SecTime >= int64(conf.SecKill.MaxRequestWaitTimeout) {
+			//	log.Printf("req[%v] is expire", req)
+			//	continue
+			//}
 
 			//设置超时时间
 			timer := time.NewTicker(time.Millisecond * time.Duration(conf.SecKill.CoreWaitResultTimeout))
