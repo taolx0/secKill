@@ -5,7 +5,8 @@ import (
 )
 
 func main() {
-	setup.InitZk()
+	//setup.InitZk()
+	setup.InitEtcd()
 	setup.InitRedis()
 	setup.RunService()
 }
