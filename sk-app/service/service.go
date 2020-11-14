@@ -197,5 +197,6 @@ func SecInfoById(productId int) (map[string]interface{}, int, error) {
 		"end":        end,
 		"status":     status,
 	}
+	log.Printf("sk-app service.go : %s", data)
 	return data, code, err
 }
