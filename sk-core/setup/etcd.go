@@ -19,7 +19,7 @@ func InitEtcd() {
 	}
 	conf.Etcd.EtcdSecProductKey = "product"
 	conf.Etcd.EtcdConn = client
-	loadProductFromEtcd(conf.Etcd.EtcdSecProductKey)
+	go loadProductFromEtcd(conf.Etcd.EtcdSecProductKey)
 }
 
 func loadProductFromEtcd(key string) {
