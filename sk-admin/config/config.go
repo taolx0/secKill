@@ -16,7 +16,7 @@ const (
 	kConfigType = "CONFIG_TYPE"
 )
 
-var ZipkinTracer *zipkin.Tracer
+//var ZipkinTracer *zipkin.Tracer
 var Logger log.Logger
 
 func init() {
@@ -38,6 +38,7 @@ func init() {
 	}
 	zipkinUrl := "http://" + conf.TraceConfig.Host + ":" + conf.TraceConfig.Port + conf.TraceConfig.Url
 	_ = Logger.Log("zipkin url", zipkinUrl)
+	initTracer(zipkinUrl)
 }
 
 func initDefault() {
@@ -52,7 +53,7 @@ func initTracer(zipkinURL string) {
 	)
 	//defer reporter.Close()
 	zEP, _ := zipkin.NewEndpoint(bootstrap.DiscoverConfig.ServiceName, bootstrap.HttpConfig.Port)
-	ZipkinTracer, err = zipkin.NewTracer(
+	_, err = zipkin.NewTracer(
 		reporter, zipkin.WithLocalEndpoint(zEP), zipkin.WithNoopTracer(useNoopTracer),
 	)
 	if err != nil {

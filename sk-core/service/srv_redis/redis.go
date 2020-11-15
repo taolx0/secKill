@@ -47,7 +47,7 @@ func HandleReader() {
 			var req config.SecRequest
 			err = json.Unmarshal([]byte(data[1]), &req)
 			if err != nil {
-				log.Printf("unmarshal to secrequest failed, err : %v", err)
+				log.Printf("unmarshal to secRequest failed, err : %v", err)
 				continue
 			}
 

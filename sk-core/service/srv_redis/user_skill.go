@@ -22,7 +22,7 @@ func HandleUser() {
 				Code: srv_err.ErrServiceBusy,
 			}
 		}
-		fmt.Println("处理中... ", resp)
+		fmt.Println("request handling ... ", resp)
 		timer := time.NewTicker(time.Millisecond * time.Duration(conf.SecKill.SendToWriteChanTimeout))
 		select {
 		case config.SecLayerCtx.Handle2WriteChan <- resp:
