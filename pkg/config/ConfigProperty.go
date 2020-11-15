@@ -14,7 +14,6 @@ var (
 	SecKill     SecKillConf
 	MysqlConfig MysqlConf
 	TraceConfig TraceConf
-	Zk          ZookeeperConf
 )
 
 type ZookeeperConf struct {
