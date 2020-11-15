@@ -17,7 +17,7 @@ func NewProductCountMgr() *ProductCountMgr {
 	return productMgr
 }
 
-//商品数量
+//查询商品数量
 func (p *ProductCountMgr) Count(productId int) (count int) {
 	p.lock.RLock()
 	defer p.lock.RUnlock()
@@ -26,7 +26,7 @@ func (p *ProductCountMgr) Count(productId int) (count int) {
 	return
 }
 
-//添加商品
+//商品售出计数
 func (p *ProductCountMgr) Add(productId, count int) {
 	p.lock.Lock()
 	defer p.lock.Unlock()
