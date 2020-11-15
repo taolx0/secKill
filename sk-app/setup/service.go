@@ -4,21 +4,19 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	//kitPrometheus "github.com/go-kit/kit/metrics/prometheus"
 	kitZipkin "github.com/go-kit/kit/tracing/zipkin"
-	localConfig "secKill/pkg/config"
-	register "secKill/pkg/discover"
-	"secKill/sk-app/endpoint"
-	"secKill/sk-app/plugins"
-	"secKill/sk-app/service"
-	"secKill/sk-app/transport"
-	//stdPrometheus "github.com/prometheus/client_golang/prometheus"
 	"golang.org/x/time/rate"
 	"log"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
 	"os/signal"
+	conf "secKill/pkg/config"
+	register "secKill/pkg/discover"
+	"secKill/sk-app/endpoint"
+	"secKill/sk-app/plugins"
+	"secKill/sk-app/service"
+	"secKill/sk-app/transport"
 	"syscall"
 	"time"
 )
@@ -31,22 +29,6 @@ func InitServer(host string, servicePort string) {
 	flag.Parse()
 
 	errChan := make(chan error)
-
-	//fieldKeys := []string{"method"}
-
-	//requestCount := kitPrometheus.NewCounterFrom(stdPrometheus.CounterOpts{
-	//	Namespace: "aoho",
-	//	Subsystem: "sk_app",
-	//	Name:      "request_count",
-	//	Help:      "Number of requests received.",
-	//}, fieldKeys)
-	//
-	//requestLatency := kitPrometheus.NewSummaryFrom(stdPrometheus.SummaryOpts{
-	//	Namespace: "aoho",
-	//	Subsystem: "sk_app",
-	//	Name:      "request_latency",
-	//	Help:      "Total duration of requests in microseconds.",
-	//}, fieldKeys)
 
 	rateBucket := rate.NewLimiter(rate.Every(time.Second*1), 5000)
 
@@ -61,25 +43,25 @@ func InitServer(host string, servicePort string) {
 
 	healthCheckEnd := endpoint.MakeHealthCheckEndpoint(skAppService)
 	healthCheckEnd = plugins.NewTokenBucketLimiterWithBuildIn(rateBucket)(healthCheckEnd)
-	healthCheckEnd = kitZipkin.TraceEndpoint(localConfig.ZipkinTracer, "heath-check")(healthCheckEnd)
+	healthCheckEnd = kitZipkin.TraceEndpoint(conf.ZipkinTracer, "heath-check")(healthCheckEnd)
 
 	GetSecInfoEnd := endpoint.MakeSecInfoEndpoint(skAppService)
 	GetSecInfoEnd = plugins.NewTokenBucketLimiterWithBuildIn(rateBucket)(GetSecInfoEnd)
-	GetSecInfoEnd = kitZipkin.TraceEndpoint(localConfig.ZipkinTracer, "sec-info")(GetSecInfoEnd)
+	GetSecInfoEnd = kitZipkin.TraceEndpoint(conf.ZipkinTracer, "sec-info")(GetSecInfoEnd)
 
 	GetSecInfoListEnd := endpoint.MakeSecInfoListEndpoint(skAppService)
 	GetSecInfoListEnd = plugins.NewTokenBucketLimiterWithBuildIn(rateBucket)(GetSecInfoListEnd)
-	GetSecInfoListEnd = kitZipkin.TraceEndpoint(localConfig.ZipkinTracer, "sec-info-list")(GetSecInfoListEnd)
+	GetSecInfoListEnd = kitZipkin.TraceEndpoint(conf.ZipkinTracer, "sec-info-list")(GetSecInfoListEnd)
 
 	//秒杀单独限流
 	secRateBucket := rate.NewLimiter(rate.Every(time.Microsecond*100), 1000)
 
 	SecKillEnd := endpoint.MakeSecKillEndpoint(skAppService)
 	SecKillEnd = plugins.NewTokenBucketLimiterWithBuildIn(secRateBucket)(SecKillEnd)
-	//SecKillEnd = kitZipkin.TraceEndpoint(localConfig.ZipkinTracer, "sec-kill")(SecKillEnd)
+	//SecKillEnd = kitZipkin.TraceEndpoint(conf.ZipkinTracer, "sec-kill")(SecKillEnd)
 
 	testEnd := endpoint.MakeTestEndpoint(skAppService)
-	testEnd = kitZipkin.TraceEndpoint(localConfig.ZipkinTracer, "test")(testEnd)
+	testEnd = kitZipkin.TraceEndpoint(conf.ZipkinTracer, "test")(testEnd)
 
 	endpoints := endpoint.SkAppEndpoints{
 		SecKillEndpoint:        SecKillEnd,
@@ -90,7 +72,7 @@ func InitServer(host string, servicePort string) {
 	}
 	ctx := context.Background()
 	//创建http.Handler
-	r := transport.MakeHttpHandler(ctx, endpoints, localConfig.ZipkinTracer, localConfig.Logger)
+	r := transport.MakeHttpHandler(ctx, endpoints, conf.ZipkinTracer, conf.Logger)
 
 	//http server
 	go func() {
