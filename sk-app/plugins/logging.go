@@ -22,9 +22,10 @@ func SkAppLoggingMiddleware(logger log.Logger) service.SerMiddleware {
 }
 
 func (mw skAppLoggingMiddleware) HealthCheck() (result bool) {
+
 	defer func(begin time.Time) {
 		_ = mw.logger.Log(
-			"function", "HealthChcek",
+			"function", "HealthCheck",
 			"result", result,
 			"took", time.Since(begin),
 		)
@@ -56,8 +57,8 @@ func (mw skAppLoggingMiddleware) SecInfoList() ([]map[string]interface{}, int, e
 		)
 	}(time.Now())
 
-	data, num, error := mw.Service.SecInfoList()
-	return data, num, error
+	data, num, err := mw.Service.SecInfoList()
+	return data, num, err
 }
 
 func (mw skAppLoggingMiddleware) SecKill(req *model.SecRequest) (map[string]interface{}, int, error) {
@@ -68,6 +69,6 @@ func (mw skAppLoggingMiddleware) SecKill(req *model.SecRequest) (map[string]inte
 		)
 	}(time.Now())
 
-	result, num, error := mw.Service.SecKill(req)
-	return result, num, error
+	result, num, err := mw.Service.SecKill(req)
+	return result, num, err
 }
