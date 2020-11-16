@@ -15,20 +15,16 @@ type RandomLoadBalance struct{}
 
 // 随机负载均衡
 func (loadBalance *RandomLoadBalance) SelectService(services []*common.ServiceInstance) (*common.ServiceInstance, error) {
-
 	if services == nil || len(services) == 0 {
 		return nil, errors.New("service instances are not exist")
 	}
-
 	return services[rand.Intn(len(services))], nil
-
 }
 
 type WeightRoundRobinLoadBalance struct{}
 
 // 权重平滑负载均衡
 func (loadBalance *WeightRoundRobinLoadBalance) SelectService(services []*common.ServiceInstance) (best *common.ServiceInstance, err error) {
-
 	if services == nil || len(services) == 0 {
 		return nil, errors.New("service instances are not exist")
 	}
@@ -54,5 +50,4 @@ func (loadBalance *WeightRoundRobinLoadBalance) SelectService(services []*common
 
 	best.CurWeight -= total
 	return best, nil
-
 }
