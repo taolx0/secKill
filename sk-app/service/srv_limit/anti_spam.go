@@ -51,8 +51,8 @@ func AntiSpam(req *model.SecRequest) (err error) {
 			SecLimitMgrVars.UserLimitMap[req.ClientAddr] = limit
 		}
 
-		secIdCount = limit.secLimit.Count(req.AccessTime) //获取该秒内该用户访问次数
-		minIdCount = limit.secLimit.Count(req.AccessTime) //获取该分钟内该用户访问次数
+		secIdCount = limit.secLimit.Count(req.AccessTime) //获取该秒内该Id访问次数
+		minIdCount = limit.minLimit.Count(req.AccessTime) //获取该分钟内该Id访问次数
 
 		//客户端Ip频率控制
 		limit, ok = SecLimitMgrVars.IpLimitMap[req.ClientAddr]
