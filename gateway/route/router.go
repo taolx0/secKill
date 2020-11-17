@@ -7,7 +7,7 @@ import (
 	"github.com/afex/hystrix-go/hystrix"
 	"github.com/go-kit/kit/log"
 	"github.com/openzipkin/zipkin-go"
-	zipkinhttpsvr "github.com/openzipkin/zipkin-go/middleware/http"
+	zipKinHttpSvr "github.com/openzipkin/zipkin-go/middleware/http"
 	"net/http"
 	"net/http/httputil"
 	"secKill/gateway/config"
@@ -25,7 +25,7 @@ type HystrixRouter struct {
 	logger      log.Logger     //日志工具
 	fallbackMsg string         //回调消息
 	tracer      *zipkin.Tracer //服务追踪对象
-	loadbalance loadbalance.LoadBalance
+	loadBalance loadbalance.LoadBalance
 }
 
 func Routes(zipkinTracer *zipkin.Tracer, fbMsg string, logger log.Logger) http.Handler {
@@ -34,7 +34,7 @@ func Routes(zipkinTracer *zipkin.Tracer, fbMsg string, logger log.Logger) http.H
 		logger:      logger,
 		fallbackMsg: fbMsg,
 		tracer:      zipkinTracer,
-		loadbalance: &loadbalance.RandomLoadBalance{},
+		loadBalance: &loadbalance.RandomLoadBalance{},
 	}
 }
 
@@ -67,13 +67,14 @@ func preFilter(r *http.Request) bool {
 	}
 }
 
-func postFilter() {
-	// for custom filter
-}
+//func postFilter() {
+//	// for custom filter
+//}
+
 func (router HystrixRouter) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	//查询原始请求路径，如：/string-service/calculate/10/5
 	reqPath := r.URL.Path
-	router.logger.Log("reqPath: ", reqPath)
+	_ = router.logger.Log("reqPath: ", reqPath)
 
 	// 健康检查直接返回
 	if reqPath == "/health" {
@@ -83,9 +84,9 @@ func (router HystrixRouter) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 	if reqPath == "" || !preFilter(r) {
-		err = errors.New("illegal request!")
+		err = errors.New("illegal request")
 		w.WriteHeader(403)
-		w.Write([]byte(err.Error()))
+		_, _ = w.Write([]byte(err.Error()))
 		return
 	}
 
@@ -114,7 +115,7 @@ func (router HystrixRouter) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			destPath := strings.Join(pathArray[2:], "/")
 
 			//随机选择一个服务实例
-			router.logger.Log("service id", serviceInstance.Host, serviceInstance.Port)
+			_ = router.logger.Log("service id", serviceInstance.Host, serviceInstance.Port)
 
 			//设置代理服务地址信息
 			req.URL.Scheme = "http"
@@ -124,7 +125,7 @@ func (router HystrixRouter) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		var proxyError error = nil
 		// 为反向代理增加追踪逻辑，使用如下RoundTrip代替默认Transport
-		roundTrip, _ := zipkinhttpsvr.NewTransport(router.tracer, zipkinhttpsvr.TransportTrace(true))
+		roundTrip, _ := zipKinHttpSvr.NewTransport(router.tracer, zipKinHttpSvr.TransportTrace(true))
 
 		//反向代理失败时错误处理
 		errorHandler := func(ew http.ResponseWriter, er *http.Request, err error) {
@@ -142,7 +143,7 @@ func (router HystrixRouter) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	}, func(err error) error {
 		//run执行失败，返回fallback信息
-		router.logger.Log("fallback error description", err.Error())
+		_ = router.logger.Log("fallback error description", err.Error())
 
 		return errors.New(router.fallbackMsg)
 	})
@@ -150,6 +151,6 @@ func (router HystrixRouter) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Do方法执行失败，响应错误信息
 	if err != nil {
 		w.WriteHeader(500)
-		w.Write([]byte(err.Error()))
+		_, _ = w.Write([]byte(err.Error()))
 	}
 }
