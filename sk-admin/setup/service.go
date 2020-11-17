@@ -4,9 +4,9 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	kitprometheus "github.com/go-kit/kit/metrics/prometheus"
-	kitzipkin "github.com/go-kit/kit/tracing/zipkin"
-	stdprometheus "github.com/prometheus/client_golang/prometheus"
+	kitPrometheus "github.com/go-kit/kit/metrics/prometheus"
+	kitZipkin "github.com/go-kit/kit/tracing/zipkin"
+	stdPrometheus "github.com/prometheus/client_golang/prometheus"
 	"golang.org/x/time/rate"
 	"log"
 	"net/http"
@@ -32,20 +32,20 @@ func InitServer(serviceHost string, servicePort string) {
 
 	fieldKeys := []string{"method"}
 
-	requestCount := kitprometheus.NewCounterFrom(stdprometheus.CounterOpts{
-		Namespace: "aoho",
+	requestCount := kitPrometheus.NewCounterFrom(stdPrometheus.CounterOpts{
+		Namespace: "Tommy",
 		Subsystem: "user_service",
 		Name:      "request_count",
 		Help:      "Number of requests received.",
 	}, fieldKeys)
 
-	requestLatency := kitprometheus.NewSummaryFrom(stdprometheus.SummaryOpts{
-		Namespace: "aoho",
+	requestLatency := kitPrometheus.NewSummaryFrom(stdPrometheus.SummaryOpts{
+		Namespace: "Tommy",
 		Subsystem: "user_service",
 		Name:      "request_latency",
 		Help:      "Total duration of requests in microseconds.",
 	}, fieldKeys)
-	ratebucket := rate.NewLimiter(rate.Every(time.Second*1), 100)
+	rateBucket := rate.NewLimiter(rate.Every(time.Second*1), 100)
 
 	var (
 		activityService service.ActivityService
@@ -68,24 +68,24 @@ func InitServer(serviceHost string, servicePort string) {
 	productService = plugins.ProductMetrics(requestCount, requestLatency)(productService)
 
 	createActivityEnd := endpoint.MakeCreateActivityEndpoint(activityService)
-	createActivityEnd = plugins.NewTokenBucketLimiterWithBuildIn(ratebucket)(createActivityEnd)
-	createActivityEnd = kitzipkin.TraceEndpoint(config.ZipkinTracer, "create-activity")(createActivityEnd)
+	createActivityEnd = plugins.NewTokenBucketLimiterWithBuildIn(rateBucket)(createActivityEnd)
+	createActivityEnd = kitZipkin.TraceEndpoint(config.ZipkinTracer, "create-activity")(createActivityEnd)
 
 	GetActivityEnd := endpoint.MakeGetActivityEndpoint(activityService)
-	GetActivityEnd = plugins.NewTokenBucketLimiterWithBuildIn(ratebucket)(GetActivityEnd)
-	GetActivityEnd = kitzipkin.TraceEndpoint(config.ZipkinTracer, "get-activity")(GetActivityEnd)
+	GetActivityEnd = plugins.NewTokenBucketLimiterWithBuildIn(rateBucket)(GetActivityEnd)
+	GetActivityEnd = kitZipkin.TraceEndpoint(config.ZipkinTracer, "get-activity")(GetActivityEnd)
 
 	createProductEnd := endpoint.MakeCreateProductEndpoint(productService)
-	createProductEnd = plugins.NewTokenBucketLimiterWithBuildIn(ratebucket)(createProductEnd)
-	createProductEnd = kitzipkin.TraceEndpoint(config.ZipkinTracer, "create-product")(createProductEnd)
+	createProductEnd = plugins.NewTokenBucketLimiterWithBuildIn(rateBucket)(createProductEnd)
+	createProductEnd = kitZipkin.TraceEndpoint(config.ZipkinTracer, "create-product")(createProductEnd)
 
 	GetProductEnd := endpoint.MakeGetProductEndpoint(productService)
-	GetProductEnd = plugins.NewTokenBucketLimiterWithBuildIn(ratebucket)(GetProductEnd)
-	GetProductEnd = kitzipkin.TraceEndpoint(config.ZipkinTracer, "get-product")(GetProductEnd)
+	GetProductEnd = plugins.NewTokenBucketLimiterWithBuildIn(rateBucket)(GetProductEnd)
+	GetProductEnd = kitZipkin.TraceEndpoint(config.ZipkinTracer, "get-product")(GetProductEnd)
 
 	//创建健康检查的Endpoint
 	healthEndpoint := endpoint.MakeHealthCheckEndpoint(skAdminService)
-	healthEndpoint = kitzipkin.TraceEndpoint(config.ZipkinTracer, "health-endpoint")(healthEndpoint)
+	healthEndpoint = kitZipkin.TraceEndpoint(config.ZipkinTracer, "health-endpoint")(healthEndpoint)
 
 	endpoints := endpoint.SkAdminEndpoints{
 		GetActivityEndpoint:    GetActivityEnd,
