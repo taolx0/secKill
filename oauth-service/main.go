@@ -64,18 +64,18 @@ func main() {
 
 	tokenEndpoint := endpoint.MakeTokenEndpoint(tokenGranter, clientDetailsService)
 	tokenEndpoint = endpoint.MakeClientAuthorizationMiddleware(localConfig.Logger)(tokenEndpoint)
-	tokenEndpoint = plugins.NewTokenBucketLimitterWithBuildIn(rateBucket)(tokenEndpoint)
+	tokenEndpoint = plugins.NewTokenBucketLimiterWithBuildIn(rateBucket)(tokenEndpoint)
 	tokenEndpoint = kitZipkin.TraceEndpoint(localConfig.ZipkinTracer, "token-endpoint")(tokenEndpoint)
 	//tokenEndpoint = plugins.ClientAuthorizationMiddleware(clientDetailsService)(tokenEndpoint)
 
 	checkTokenEndpoint := endpoint.MakeCheckTokenEndpoint(tokenService)
 	checkTokenEndpoint = endpoint.MakeClientAuthorizationMiddleware(localConfig.Logger)(checkTokenEndpoint)
-	checkTokenEndpoint = plugins.NewTokenBucketLimitterWithBuildIn(rateBucket)(checkTokenEndpoint)
+	checkTokenEndpoint = plugins.NewTokenBucketLimiterWithBuildIn(rateBucket)(checkTokenEndpoint)
 	checkTokenEndpoint = kitZipkin.TraceEndpoint(localConfig.ZipkinTracer, "check-endpoint")(checkTokenEndpoint)
 	//tokenEndpoint = plugins.ClientAuthorizationMiddleware(clientDetailsService)(checkTokenEndpoint)
 
 	gRPCCheckTokenEndpoint := endpoint.MakeCheckTokenEndpoint(tokenService)
-	gRPCCheckTokenEndpoint = plugins.NewTokenBucketLimitterWithBuildIn(rateBucket)(gRPCCheckTokenEndpoint)
+	gRPCCheckTokenEndpoint = plugins.NewTokenBucketLimiterWithBuildIn(rateBucket)(gRPCCheckTokenEndpoint)
 	gRPCCheckTokenEndpoint = kitZipkin.TraceEndpoint(localConfig.ZipkinTracer, "grpc-check-endpoint")(gRPCCheckTokenEndpoint)
 	//tokenEndpoint = plugins.ClientAuthorizationMiddleware(clientDetailsService)(checkTokenEndpoint)
 
