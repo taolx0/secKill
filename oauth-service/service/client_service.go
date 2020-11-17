@@ -22,7 +22,7 @@ func NewMysqlClientDetailsService() ClientDetailsService {
 	return &MysqlClientDetailsService{}
 }
 
-func (service *MysqlClientDetailsService) GetClientDetailByClientId(ctx context.Context, clientId string, clientSecret string) (*model.ClientDetails, error) {
+func (service *MysqlClientDetailsService) GetClientDetailByClientId(_ context.Context, clientId string, clientSecret string) (*model.ClientDetails, error) {
 
 	clientDetailsModel := model.NewClientDetailsModel()
 	if clientDetails, err := clientDetailsModel.GetClientDetailsByClientId(clientId); err == nil {

@@ -3,18 +3,17 @@ package transport
 import (
 	"context"
 	"secKill/oauth-service/endpoint"
-	"secKill/oauth-service/model"
 	"secKill/pb"
 )
 
-func EncodeGRPCCheckTokenRequest(_ context.Context, r interface{}) (interface{}, error) {
-	req := r.(*endpoint.CheckTokenRequest)
-	return &pb.CheckTokenRequest{
-		Token: req.Token,
-	}, nil
-}
+//func EncodeGRPCCheckTokenRequest(_ context.Context, r interface{}) (interface{}, error) {
+//	req := r.(*endpoint.CheckTokenRequest)
+//	return &pb.CheckTokenRequest{
+//		Token: req.Token,
+//	}, nil
+//}
 
-func DecodeGRPCCheckTokenRequest(ctx context.Context, r interface{}) (interface{}, error) {
+func DecodeGRPCCheckTokenRequest(_ context.Context, r interface{}) (interface{}, error) {
 	req := r.(*pb.CheckTokenRequest)
 	return &endpoint.CheckTokenRequest{
 		Token: req.Token,
@@ -48,29 +47,29 @@ func EncodeGRPCCheckTokenResponse(_ context.Context, r interface{}) (interface{}
 	}
 }
 
-func DecodeGRPCCheckTokenResponse(_ context.Context, r interface{}) (interface{}, error) {
-	resp := r.(*pb.CheckTokenResponse)
-	if resp.Err != "" {
-		return endpoint.CheckTokenResponse{
-			Error: resp.Err,
-		}, nil
-	} else {
-		return endpoint.CheckTokenResponse{
-			OAuthDetails: &model.OAuth2Details{
-				User: &model.UserDetails{
-					UserId:      resp.UserDetails.UserId,
-					Username:    resp.UserDetails.Username,
-					Authorities: resp.UserDetails.Authorities,
-				},
-				Client: &model.ClientDetails{
-					ClientId:                    resp.ClientDetails.ClientId,
-					AccessTokenValiditySeconds:  int(resp.ClientDetails.AccessTokenValiditySeconds),
-					RefreshTokenValiditySeconds: int(resp.ClientDetails.RefreshTokenValiditySeconds),
-					AuthorizedGrantTypes:        resp.ClientDetails.AuthorizedGrantTypes,
-				},
-			},
-		}, nil
-
-	}
-
-}
+//func DecodeGRPCCheckTokenResponse(_ context.Context, r interface{}) (interface{}, error) {
+//	resp := r.(*pb.CheckTokenResponse)
+//	if resp.Err != "" {
+//		return endpoint.CheckTokenResponse{
+//			Error: resp.Err,
+//		}, nil
+//	} else {
+//		return endpoint.CheckTokenResponse{
+//			OAuthDetails: &model.OAuth2Details{
+//				User: &model.UserDetails{
+//					UserId:      resp.UserDetails.UserId,
+//					Username:    resp.UserDetails.Username,
+//					Authorities: resp.UserDetails.Authorities,
+//				},
+//				Client: &model.ClientDetails{
+//					ClientId:                    resp.ClientDetails.ClientId,
+//					AccessTokenValiditySeconds:  int(resp.ClientDetails.AccessTokenValiditySeconds),
+//					RefreshTokenValiditySeconds: int(resp.ClientDetails.RefreshTokenValiditySeconds),
+//					AuthorizedGrantTypes:        resp.ClientDetails.AuthorizedGrantTypes,
+//				},
+//			},
+//		}, nil
+//
+//	}
+//
+//}

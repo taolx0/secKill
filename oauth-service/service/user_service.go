@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	InvalidAuthentication = errors.New("invalid auth")
-	InvalidUserInfo       = errors.New("invalid user info")
+	//InvalidAuthentication = errors.New("invalid auth")
+	InvalidUserInfo = errors.New("invalid user info")
 )
 
 // Service Define a service interface
@@ -25,7 +25,6 @@ type RemoteUserService struct {
 }
 
 func (service *RemoteUserService) GetUserDetailByUsername(ctx context.Context, username, password string) (*model.UserDetails, error) {
-
 	response, err := service.userClient.CheckUser(ctx, nil, &pb.UserRequest{
 		Username: username,
 		Password: password,
@@ -43,16 +42,14 @@ func (service *RemoteUserService) GetUserDetailByUsername(ctx context.Context, u
 		}
 	}
 	return nil, err
-
 }
 
 func NewRemoteUserDetailService() *RemoteUserService {
-
 	userClient, _ := client.NewUserClient("user", nil, nil)
 	return &RemoteUserService{
 		userClient: userClient,
 	}
 }
 
-// ServiceMiddleware define service middleware
-type ServiceMiddleware func(Service) Service
+// Middleware define service middleware
+type Middleware func(Service) Service

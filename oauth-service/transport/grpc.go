@@ -3,7 +3,7 @@ package transport
 import (
 	"context"
 	"github.com/go-kit/kit/transport/grpc"
-	endpts "secKill/oauth-service/endpoint"
+	endpoints "secKill/oauth-service/endpoint"
 	"secKill/pb"
 )
 
@@ -19,7 +19,7 @@ func (s *grpcServer) CheckToken(ctx context.Context, r *pb.CheckTokenRequest) (*
 	return resp.(*pb.CheckTokenResponse), nil
 }
 
-func NewGRPCServer(ctx context.Context, endpoints endpts.OAuth2Endpoints, serverTracer grpc.ServerOption) pb.OAuthServiceServer {
+func NewGRPCServer(_ context.Context, endpoints endpoints.OAuth2Endpoints, serverTracer grpc.ServerOption) pb.OAuthServiceServer {
 	return &grpcServer{
 		checkTokenServer: grpc.NewServer(
 			endpoints.GRPCCheckTokenEndpoint,

@@ -18,7 +18,7 @@ type OAuth2Endpoints struct {
 	HealthCheckEndpoint    endpoint.Endpoint
 }
 
-func MakeClientAuthorizationMiddleware(logger log.Logger) endpoint.Middleware {
+func MakeClientAuthorizationMiddleware(_ log.Logger) endpoint.Middleware {
 	return func(next endpoint.Endpoint) endpoint.Endpoint {
 
 		return func(ctx context.Context, request interface{}) (response interface{}, err error) {
@@ -34,53 +34,54 @@ func MakeClientAuthorizationMiddleware(logger log.Logger) endpoint.Middleware {
 	}
 }
 
-func MakeOAuth2AuthorizationMiddleware(logger log.Logger) endpoint.Middleware {
-	return func(next endpoint.Endpoint) endpoint.Endpoint {
+//func MakeOAuth2AuthorizationMiddleware(logger log.Logger) endpoint.Middleware {
+//	return func(next endpoint.Endpoint) endpoint.Endpoint {
+//
+//		return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+//
+//			if err, ok := ctx.Value(OAuth2ErrorKey).(error); ok {
+//				return nil, err
+//			}
+//			if _, ok := ctx.Value(OAuth2DetailsKey).(*model.OAuth2Details); !ok {
+//				return nil, ErrInvalidUserRequest
+//			}
+//			return next(ctx, request)
+//		}
+//	}
+//}
 
-		return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-
-			if err, ok := ctx.Value(OAuth2ErrorKey).(error); ok {
-				return nil, err
-			}
-			if _, ok := ctx.Value(OAuth2DetailsKey).(*model.OAuth2Details); !ok {
-				return nil, ErrInvalidUserRequest
-			}
-			return next(ctx, request)
-		}
-	}
-}
-func MakeAuthorityAuthorizationMiddleware(authority string, logger log.Logger) endpoint.Middleware {
-	return func(next endpoint.Endpoint) endpoint.Endpoint {
-
-		return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-
-			if err, ok := ctx.Value(OAuth2ErrorKey).(error); ok {
-				return nil, err
-			}
-			if details, ok := ctx.Value(OAuth2DetailsKey).(*model.OAuth2Details); !ok {
-				return nil, ErrInvalidClientRequest
-			} else {
-				for _, value := range details.User.Authorities {
-					if value == authority {
-						return next(ctx, request)
-					}
-				}
-				return nil, ErrNotPermit
-			}
-		}
-	}
-}
+//func MakeAuthorityAuthorizationMiddleware(authority string, logger log.Logger) endpoint.Middleware {
+//	return func(next endpoint.Endpoint) endpoint.Endpoint {
+//
+//		return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+//
+//			if err, ok := ctx.Value(OAuth2ErrorKey).(error); ok {
+//				return nil, err
+//			}
+//			if details, ok := ctx.Value(OAuth2DetailsKey).(*model.OAuth2Details); !ok {
+//				return nil, ErrInvalidClientRequest
+//			} else {
+//				for _, value := range details.User.Authorities {
+//					if value == authority {
+//						return next(ctx, request)
+//					}
+//				}
+//				return nil, ErrNotPermit
+//			}
+//		}
+//	}
+//}
 
 const (
-	OAuth2DetailsKey       = "OAuth2Details"
+	//OAuth2DetailsKey       = "OAuth2Details"
 	OAuth2ClientDetailsKey = "OAuth2ClientDetails"
 	OAuth2ErrorKey         = "OAuth2Error"
 )
 
 var (
 	ErrInvalidClientRequest = errors.New("invalid client message")
-	ErrInvalidUserRequest   = errors.New("invalid user message")
-	ErrNotPermit            = errors.New("not permit")
+	//ErrInvalidUserRequest   = errors.New("invalid user message")
+	//ErrNotPermit            = errors.New("not permit")
 )
 
 type TokenRequest struct {
@@ -94,7 +95,7 @@ type TokenResponse struct {
 }
 
 //  make endpoint
-func MakeTokenEndpoint(svc service.TokenGranter, clientService service.ClientDetailsService) endpoint.Endpoint {
+func MakeTokenEndpoint(svc service.TokenGranter, _ service.ClientDetailsService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(*TokenRequest)
 		token, err := svc.Grant(ctx, req.GrantType, ctx.Value(OAuth2ClientDetailsKey).(*model.ClientDetails), req.Reader)

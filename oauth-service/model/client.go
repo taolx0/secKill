@@ -36,7 +36,6 @@ func (p *ClientDetailsModel) getTableName() string {
 }
 
 func (p *ClientDetailsModel) GetClientDetailsByClientId(clientId string) (*ClientDetails, error) {
-
 	conn := mysql.DB()
 	if result, err := conn.Table(p.getTableName()).Where(map[string]interface{}{"client_id": clientId}).First(); err == nil {
 
@@ -55,7 +54,6 @@ func (p *ClientDetailsModel) GetClientDetailsByClientId(clientId string) (*Clien
 	} else {
 		return nil, err
 	}
-
 }
 
 func (p *ClientDetailsModel) CreateClientDetails(clientDetails *ClientDetails) error {
