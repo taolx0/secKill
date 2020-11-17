@@ -9,7 +9,7 @@ import (
 const (
 	ActivityStatusNormal  = 0
 	ActivityStatusDisable = 1
-	ActivityStatusExpire  = 2
+	//ActivityStatusExpire  = 2
 )
 
 type Activity struct {

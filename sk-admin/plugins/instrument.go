@@ -15,7 +15,7 @@ import (
 var ErrLimitExceed = errors.New("rate limit exceed")
 
 // NewTokenBucketLimiterWithJuju 使用juju/rateLimit创建限流中间件
-//func NewTokenBucketLimiterWithJuju(bkt *ratelimit.Bucket) endpoint.Middleware {
+//func NewTokenBucketLimiterWithJuju(bkt *rateLimit.Bucket) endpoint.Middleware {
 //	return func(next endpoint.Endpoint) endpoint.Endpoint {
 //		return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 //			if bkt.TakeAvailable(1) == 0 {
