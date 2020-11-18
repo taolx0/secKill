@@ -99,6 +99,7 @@ func (mw activityLoggingMiddleware) CreateActivity(activity *model.Activity) err
 }
 
 func (mw skAdminLoggingMiddleware) HealthCheck() (result bool) {
+
 	defer func(begin time.Time) {
 		_ = mw.logger.Log(
 			"function", "HealthCheck",
