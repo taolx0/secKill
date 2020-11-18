@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-var ErrLimitExceed = errors.New("Rate limit exceed")
+var ErrLimitExceed = errors.New("rate limit exceed")
 
 // NewTokenBucketLimiterWithJuju 使用juju/rateLimit创建限流中间件
 func NewTokenBucketLimiterWithJuju(bkt *ratelimit.Bucket) endpoint.Middleware {

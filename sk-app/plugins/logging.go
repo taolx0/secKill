@@ -15,11 +15,11 @@ type skAppLoggingMiddleware struct {
 }
 
 // LoggingMiddleware make logging middleware
-func SkAppLoggingMiddleware(logger log.Logger) service.SerMiddleware {
-	return func(next service.Service) service.Service {
-		return skAppLoggingMiddleware{next, logger}
-	}
-}
+//func SkAppLoggingMiddleware(logger log.Logger) service.SerMiddleware {
+//	return func(next service.Service) service.Service {
+//		return skAppLoggingMiddleware{next, logger}
+//	}
+//}
 
 func (mw skAppLoggingMiddleware) HealthCheck() (result bool) {
 
