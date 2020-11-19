@@ -1,3 +1,34 @@
-#测试获取秒杀信息
-GET http://127.0.0.1
+### test single sec request
+POST http://127.0.0.1:9031/sec/kill
+Content-Type: application/json
+
+{
+  "product_id": 2,
+  "user_id":58858889,
+  "client_addr":"192.168.0.1",
+  "auth_code":"auth_code",
+  "sec_time": 1605316994,
+  "client_reference":"test"
+}
+
+### create activity
+POST http://127.0.0.1:9030/activity/create
+Content-Type: application/json
+
+{
+  "activity_name": "test secKill",
+  "product_id": 2,
+  "start_time": 1604160000,
+  "end_time": 1606752000,
+  "total": 1000,
+  "speed": 1,
+  "buy_limit": 10,
+  "buy_rate": 0.1
+}
+
+### get sec information
+GET http://127.0.0.1:9031/sec/info
 Accept: application/json
+
+###
+
