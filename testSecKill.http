@@ -1,0 +1,3 @@
+#测试获取秒杀信息
+GET http://127.0.0.1
+Accept: application/json
